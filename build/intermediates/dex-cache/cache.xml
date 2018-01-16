@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/19970eb537d7781a0540479acdc12b8bd1e199cf/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="2430e711762a749feb00b3d64858ca4768251b9d">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_440ae436b73e957063b234681167562688024e37.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/071e4594a2d5ed15acabaa11925081aa9eea281d/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="364364bf77b4a71afc5930fc3ae57b3f0eea637c">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_20ce01214236eed87da4c75eb4d27f1e589137a9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/dd7e1ca1982fc9051a83daa633f091e8cbf1f3db/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="47471eb19df288158b00b8d9cfa41bce7373f5cc">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_b4a203ce4c927649ba065bbe7a28e5f99311f089.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/1ec054077eace3d60f09f7273143f50d8384a147/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="18d31838aa4fcc768a8a0516e22cc13b94655d89">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_5f7280d38172b66c6c233484d8693f84d5c6cb4a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/81bed1ecef4d8cf54709e2b1a41d2f0417345812/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="2e92aa0163544a804a0b34f169ca61801770839a">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_2d53d77cd9206fbeca27eae532ef5be0bbdf0700.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/87209f79b0f502de710a9be73b6d945531fa6b01/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="70ffe00aaf049893f59d1dad57bd82992faa38ef">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_5bc64d56415db5b6c75a8058d7d2ee642c3ffcb2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/f7fbe9d5ab22e79f9f679a7dcf9a335c5662b8af/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="8df0e365e40beb151bc42dee20817721a6cab7b0">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_f2bb7d42e8602f0891b022cfbffbcd13e56bc258.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/d7afe34b0e4c58822451e9b899d73f0744aa9121/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="fcd01fd11233459f546c437ec927e9b61bf7caf1">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_8da8ddba3c9f857c0a76029a43b5ed54ec41b6eb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/26.0.0-alpha1/support-annotations-26.0.0-alpha1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="023ee503b631f69511e335a061ea008f8da60f40">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/support-annotations-26.0.0-alpha1_439482bca435058439cf94efa11a2cd018e68fba.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/ffc556bed40c7876da2c66a5c4cc5b74e7238736/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_2ed4351702baaf909088cf09a8e342d89f65c708.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/ba8d5a0840c14a69d76e9e3f9c8f13e3d9130871/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="fcae52a60bc07924d370b4d376116cd8f8581f54">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_fa4ba41c45fab34d90db5276326532880f3d7618.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/1dafce7688ab93ec0aab4258f1481fb13cc8f2d6/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="9935891f23923f39d002087085d9696568a9f657">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_a873efae7febda2d2aa1466089bbf8fd23bebb7b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/f762d525c2e04d92c67cb5087979264ae7c8772a/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="88246166d5afb106f532f6e6deae683c66b42c89">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_c522e3efbb0997c436850b84dd0d4ea00e5e1a34.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/mcs/.android/build-cache/91b933d95ba4fc73d488ba51c5bdd012ff2bb454/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="952944218ecedea1554a513dec0c14d570642843">
+        <dex dex="/home/mcs/mmm-project/app/build/intermediates/pre-dexed/debug/classes_3812d62b22401a0e910a1bd4549df58d441c955c.jar" />
+    </item>
+
+</items>
