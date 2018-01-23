@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "332234271129",
+    "firebase_url": "https://mmm-fetescience.firebaseio.com",
+    "project_id": "mmm-fetescience",
+    "storage_bucket": "mmm-fetescience.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332234271129:android:b32b747a0e34dea2",
+        "android_client_info": {
+          "package_name": "com.example.mcs.mmm_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332234271129-kr6pl41gc64268cfsaqh8rqidmpc23p5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mcs.mmm_project",
+            "certificate_hash": "42279d6c9a6f1f2b4c72e2e805ccf4c1e2918243"
+          }
+        },
+        {
+          "client_id": "332234271129-so7cpa97mvp0s4nu5bqq0ei649vqj23g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChnQJdUEO2fwIGrjVu7tEIHSPt3_vAXu4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332234271129-so7cpa97mvp0s4nu5bqq0ei649vqj23g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
