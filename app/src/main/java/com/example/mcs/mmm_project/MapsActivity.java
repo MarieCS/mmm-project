@@ -8,21 +8,21 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.clustering.ClusterManager;
+
+import pojo.EventPosition;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private DatabaseReference mDatabase;
-    private ClusterManager<Evenement> mClusterManager;
+    private ClusterManager<EventPosition> mClusterManager;
 
 
     @Override
@@ -62,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Double lon = (Double) coordinates.child("0").getValue();
                 Double lat = (Double) coordinates.child("1").getValue();
 
-                mClusterManager.addItem(new Evenement(lat, lon));
+                mClusterManager.addItem(new EventPosition(lat, lon));
                 mClusterManager.cluster();
             }
 
