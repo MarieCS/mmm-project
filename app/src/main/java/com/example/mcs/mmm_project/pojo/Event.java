@@ -1,6 +1,8 @@
-package pojo;
+package com.example.mcs.mmm_project.pojo;
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable {
     public String adresse;
     public int age_maximum;
     public int age_minimum;
@@ -48,18 +50,10 @@ public class Event {
     public String type_d_animation;
     public String ville;
 
-    public Event() {
-
-    }
+    public Event() { }
 
     @Override
     public String toString() {
-        return "Event{" +
-                "adresse='" + adresse + '\'' +
-                ", titre_fr='" + titre_fr + '\'' +
-                ", identifiant='" + identifiant + '\'' +
-                ", identifiant_du_lieu='" + identifiant_du_lieu + '\'' +
-                '}';
+        return "ID: " + identifiant + ", " + titre_fr;
     }
-
 }

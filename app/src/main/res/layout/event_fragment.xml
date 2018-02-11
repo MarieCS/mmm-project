@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mcs.mmm_project.EventFragment">
+    tools:context="com.example.mcs.mmm_project.fragment.EventFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -10,7 +10,7 @@
         android:id="@+id/fragmentLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fichier de l'évenement" />
+        android:text="Fiche de l'évenement" />
 
     <TextView
         android:id="@+id/title_fr"
@@ -18,5 +18,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="title_fr" />
+    <TextView
+        android:id="@+id/adresse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="adresse" />
+
+    <TextView
+        android:id="@+id/description_fr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:text="description_fr" />
+
 
 </FrameLayout>

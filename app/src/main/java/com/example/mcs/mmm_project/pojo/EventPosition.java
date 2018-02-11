@@ -1,4 +1,4 @@
-package pojo;
+package com.example.mcs.mmm_project.pojo;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;

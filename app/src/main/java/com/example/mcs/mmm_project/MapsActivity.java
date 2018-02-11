@@ -16,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.maps.android.clustering.ClusterManager;
 
-import pojo.EventPosition;
+import com.example.mcs.mmm_project.pojo.EventPosition;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
