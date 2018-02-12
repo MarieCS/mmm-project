@@ -21,22 +21,37 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- <ImageView
-            android:id="@+id/image"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:layout_alignParentLeft="true"/>-->
-
-        <TextView
-            android:id="@+id/text"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:selectableItemBackground"
-            android:padding="20dp"
-            tools:text="Paris"
-            android:fontFamily="sans-serif"
-            android:textColor="#333"
-            android:textSize="18sp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="93px"
+                android:layout_height="124px"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:maxHeight="124px"
+                android:maxWidth="93px"
+                android:minHeight="124px"
+                android:minWidth="93px" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
+                android:fontFamily="sans-serif"
+                android:padding="20dp"
+                android:textColor="#333"
+                android:textSize="18sp"
+                tools:text="Paris" />
+        </LinearLayout>
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

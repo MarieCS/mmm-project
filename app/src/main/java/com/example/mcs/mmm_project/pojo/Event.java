@@ -7,6 +7,7 @@ public class Event implements Serializable {
     public int age_maximum;
     public int age_minimum;
     public String ages;
+    public String apercu;
     public String animateurs;
     public String code_postal;
     public String date_debut;
@@ -30,6 +31,8 @@ public class Event implements Serializable {
     public String horaires_iso;
     public String identifiant;
     public String identifiant_du_lieu;
+    public String image;
+    public String image_source;
     public String inscription_necessaire;
     public String lien;
     public String lien_d_inscription;

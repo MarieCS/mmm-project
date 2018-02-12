@@ -40,7 +40,7 @@ public class EventListFragment extends Fragment implements View.OnClickListener 
         ButterKnife.bind(this, view);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("features");
-        Query query = mDatabase.orderByKey().limitToFirst(100);
+        Query query = mDatabase.orderByKey().limitToFirst(50);
 
         query.addChildEventListener(new ChildEventListener() {
             @Override
