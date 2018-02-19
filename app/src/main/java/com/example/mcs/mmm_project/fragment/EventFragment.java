@@ -22,6 +22,11 @@ public class EventFragment extends Fragment {
     @BindView(R.id.image) ImageView image;
     @BindView(R.id.dates) TextView dates;
     @BindView(R.id.ages) TextView ages;
+    @BindView(R.id.thematiques) TextView thematiques;
+    @BindView(R.id.departement) TextView departement;
+    @BindView(R.id.type_d_animation) TextView type_d_animation;
+    @BindView(R.id.horaires_detailles_fr) TextView horaires_detailles_fr;
+    @BindView(R.id.detail_des_conditions_fr) TextView detail_des_conditions_fr;
 
     private static final String ARG_EVENT = "event";
     private Event event;
@@ -51,13 +56,18 @@ public class EventFragment extends Fragment {
             event = (Event) getArguments().getSerializable(ARG_EVENT);
 
             title_fr.setText(event.titre_fr);
-            adresse.setText(event.adresse);
+            adresse.setText(event.nom_du_lieu + "\n" + event.adresse);
             description_fr.setText(event.description_fr);
             Picasso.with(image.getContext()).load(event.image).centerCrop().fit().into(image);
             dates.setText("Du " + event.date_debut + "\nAu " + event.date_fin);
             if (event.tranche != null) {
                 ages.setText("Age : " + event.tranche);
             }
+            thematiques.setText(event.thematiques);
+            departement.setText(event.departement);
+            type_d_animation.setText(event.type_d_animation);
+            horaires_detailles_fr.setText(event.horaires_detailles_fr);
+            detail_des_conditions_fr.setText(event.detail_des_conditions_fr);
         }
 
         return view;

@@ -1,9 +1,16 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_weight="1">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     tools:context="com.example.mcs.mmm_project.fragment.EventFragment">
 
     <!-- <android.support.v7.widget.Toolbar
@@ -15,10 +22,33 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" /> -->
 
-    <TableLayout
+
+    <TextView
+        android:id="@+id/title_fr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:scrollHorizontally="false"
+        android:singleLine="false"
+        android:text="title_fr"
+        android:textAlignment="viewStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/thematiques"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingRight="10dp"
+            android:text="thematiques" />
+
+        <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:layout_weight="1">
 
         <TableRow
@@ -26,37 +56,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/title_fr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="title_fr"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/adresse"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="adresse" />
-            </LinearLayout>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -66,6 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingRight="10dp"
                     android:text="description_fr" />
 
             </LinearLayout>
@@ -91,38 +92,100 @@
 
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Informations pratiques"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/dates"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dates" />
-
-                <TextView
-                    android:id="@+id/ages"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Ages" />
-            </LinearLayout>
-
-        </TableRow>
-
     </TableLayout>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:text="Informations pratiques"
+            android:textSize="18sp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/adresse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:scrollHorizontally="false"
+                        android:singleLine="false"
+                        android:text="adresse" />
+
+                    <TextView
+                        android:id="@+id/ages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ages" />
+
+                    <TextView
+                        android:id="@+id/departement"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Departement" />
+
+                    <TextView
+                        android:id="@+id/detail_des_conditions_fr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="detail_des_conditions_fr" />
+
+                    <TextView
+                        android:id="@+id/type_d_animation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="type_d_animation" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/inscription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="inscription" />
+
+                    <TextView
+                        android:id="@+id/dates"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Dates" />
+
+                    <TextView
+                        android:id="@+id/horaires_detailles_fr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="horaires_detailles_fr" />
+
+                </LinearLayout>
+
+            </TableRow>
+
+        </TableLayout>
+
+    </LinearLayout>
+</ScrollView>
