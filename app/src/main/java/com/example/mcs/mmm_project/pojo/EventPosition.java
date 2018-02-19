@@ -10,13 +10,19 @@ import com.google.maps.android.clustering.ClusterItem;
 public class EventPosition implements ClusterItem {
 
     private final LatLng mPosition;
+    private Event event;
 
-    public EventPosition(double lat, double lng){
+    public EventPosition(double lat, double lng, Event event){
         mPosition = new LatLng(lat, lng);
+        this.event = event;
     }
 
     @Override
     public LatLng getPosition() {
         return mPosition;
+    }
+
+    public Event getEvent() {
+        return event;
     }
 }

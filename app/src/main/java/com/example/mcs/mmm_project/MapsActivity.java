@@ -1,13 +1,19 @@
 package com.example.mcs.mmm_project;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.mcs.mmm_project.pojo.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,11 +24,12 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import com.example.mcs.mmm_project.pojo.EventPosition;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ClusterManager.OnClusterItemInfoWindowClickListener<EventPosition> {
 
     private GoogleMap mMap;
     private DatabaseReference mDatabase;
     private ClusterManager<EventPosition> mClusterManager;
+    private EventPosition clickedClusterItem;
 
 
     @Override
@@ -52,8 +59,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        Query query = mDatabase.orderByKey().limitToFirst(100);
+        Query query = mDatabase.orderByKey().limitToFirst(500);
         setUpClusterer();
+
+        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+        mMap.setOnInfoWindowClickListener(mClusterManager);
 
         query.addChildEventListener(new ChildEventListener() {
             @Override
@@ -62,7 +72,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Double lon = (Double) coordinates.child("0").getValue();
                 Double lat = (Double) coordinates.child("1").getValue();
 
-                mClusterManager.addItem(new EventPosition(lat, lon));
+                Event event = dataSnapshot.child("properties").getValue(Event.class);
+
+                mClusterManager.addItem(new EventPosition(lat, lon, event));
                 mClusterManager.cluster();
             }
 
@@ -88,6 +100,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+
+
     private void setUpClusterer() {
         // Position the map on Paris
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(48, 2), 5));
@@ -96,9 +110,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // (Activity extends context, so we can pass 'this' in the constructor.)
         mClusterManager = new ClusterManager<>(this, mMap);
 
+        mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<EventPosition>() {
+                    @Override
+                    public boolean onClusterItemClick(EventPosition item) {
+                        clickedClusterItem = item;
+                        return false;
+                    }
+                });
+
+        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(
+                new AdapterEventPosition());
+
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
+    }
+
+    @Override
+    public void onClusterItemInfoWindowClick(EventPosition eventPosition) {
+        Intent i = new Intent(this, EventActivity.class);
+        i.putExtra("event", eventPosition.getEvent());
+        startActivity(i);
+    }
+
+    private class AdapterEventPosition implements GoogleMap.InfoWindowAdapter {
+
+        private final View myContentsView;
+
+        AdapterEventPosition() {
+            myContentsView = getLayoutInflater().inflate(
+                    R.layout.info_window, null);
+        }
+        @Override
+        public View getInfoWindow(Marker marker) {
+
+            TextView titre = ((TextView) myContentsView
+                    .findViewById(R.id.txtTitle));
+            TextView adresse = ((TextView) myContentsView
+                    .findViewById(R.id.txtSnippet));
+
+            titre.setText(clickedClusterItem.getEvent().titre_fr);
+            adresse.setText(clickedClusterItem.getEvent().adresse);
+
+            return myContentsView;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
     }
 }

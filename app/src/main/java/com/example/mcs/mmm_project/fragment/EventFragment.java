@@ -2,16 +2,16 @@ package com.example.mcs.mmm_project.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.mcs.mmm_project.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import com.example.mcs.mmm_project.R;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.squareup.picasso.Picasso;
 
