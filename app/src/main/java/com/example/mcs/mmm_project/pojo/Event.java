@@ -1,6 +1,12 @@
 package com.example.mcs.mmm_project.pojo;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.logging.Logger;
 
 public class Event implements Serializable {
     public String adresse;
@@ -45,6 +51,7 @@ public class Event implements Serializable {
     public String resume_dates_fr;
     public String resume_horaires_fr;
     public String selection;
+    public String site_web_du_lieu;
     public String statut;
     public String telephone_du_lieu;
     public String thematiques;
@@ -58,5 +65,28 @@ public class Event implements Serializable {
     @Override
     public String toString() {
         return "ID: " + identifiant + ", " + titre_fr;
+    }
+
+    public EventPosition getGeolocalisation() {
+        try {
+            ArrayList<Double> pos = (ArrayList<Double>) geolocalisation;
+            return new EventPosition(pos.get(0), pos.get(1), this);
+        }
+        catch (Exception e) {
+            Logger.getGlobal().warning(e.toString());
+            return null;
+        }
+    }
+
+    public Calendar getCalendar(String value) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM yyyy", Locale.FRANCE);
+        try {
+            cal.setTime(sdf.parse(value.replace("1er", "1")));
+            return cal;
+        } catch (ParseException e) {
+            Logger.getGlobal().warning(e.toString());
+            return null;
+        }
     }
 }

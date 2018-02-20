@@ -1,36 +1,60 @@
 package com.example.mcs.mmm_project.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.SeekBar;
+import android.widget.TabHost;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import com.example.mcs.mmm_project.GetData;
+import com.example.mcs.mmm_project.MapsActivity;
 import com.example.mcs.mmm_project.R;
+import com.example.mcs.mmm_project.helper.IntentHelper;
+import com.example.mcs.mmm_project.helper.StringHelper;
 import com.example.mcs.mmm_project.pojo.Event;
+import com.example.mcs.mmm_project.pojo.EventPosition;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.squareup.picasso.Picasso;
 
-public class EventFragment extends Fragment {
+import java.util.ArrayList;
+
+public class EventFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.title_fr) TextView title_fr;
     @BindView(R.id.adresse) TextView adresse;
     @BindView(R.id.description_fr) TextView description_fr;
+    @BindView(R.id.infos) TextView infos;
     @BindView(R.id.image) ImageView image;
-    @BindView(R.id.dates) TextView dates;
-    @BindView(R.id.ages) TextView ages;
-    @BindView(R.id.thematiques) TextView thematiques;
-    @BindView(R.id.departement) TextView departement;
-    @BindView(R.id.type_d_animation) TextView type_d_animation;
-    @BindView(R.id.horaires_detailles_fr) TextView horaires_detailles_fr;
-    @BindView(R.id.detail_des_conditions_fr) TextView detail_des_conditions_fr;
+    @BindView(R.id.mapView) MapView mapView;
+    @BindView(R.id.event_tabHost) TabHost tabHost;
+    @BindView(R.id.event_infos_buttons) LinearLayout event_infos_buttons;
+    @BindView(R.id.event_ratingBar) RatingBar event_ratingBar;
+    @BindView(R.id.event_seekbar_remplissage) SeekBar event_seekbar_remplissage;
+    @BindView(R.id.event_label_remplissage) TextView event_label_remplissage;
 
     private static final String ARG_EVENT = "event";
     private Event event;
     private Unbinder unbinder;
+    private GoogleMap map;
+    private Integer tauxRemplissageInitial;
 
     public EventFragment() {
         // Required empty public constructor
@@ -49,33 +73,169 @@ public class EventFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.event_fragment, container, false);
+        final View view = inflater.inflate(R.layout.event_fragment, container, false);
         this.unbinder = ButterKnife.bind(this, view);
+        tabHost.setup();
+        TabHost.TabSpec mSpec = tabHost.newTabSpec("Evenement");
+        mSpec.setContent(R.id.event_tab1);
+        mSpec.setIndicator("Evenement");
+        tabHost.addTab(mSpec);
+
+        mSpec = tabHost.newTabSpec("Evaluation");
+        mSpec.setContent(R.id.event_tab2);
+        mSpec.setIndicator("Evaluation");
+        tabHost.addTab(mSpec);
+
+        mSpec = tabHost.newTabSpec("Organisation");
+        mSpec.setContent(R.id.event_tab3);
+        mSpec.setIndicator("Organisation");
+        tabHost.addTab(mSpec);
+
 
         if (getArguments() != null) {
+            mapView.onCreate(savedInstanceState);
+            mapView.getMapAsync(this);
+
             event = (Event) getArguments().getSerializable(ARG_EVENT);
 
-            title_fr.setText(event.titre_fr);
-            adresse.setText(event.nom_du_lieu + "\n" + event.adresse);
-            description_fr.setText(event.description_fr);
             Picasso.with(image.getContext()).load(event.image).centerCrop().fit().into(image);
-            dates.setText("Du " + event.date_debut + "\nAu " + event.date_fin);
-            if (event.tranche != null) {
-                ages.setText("Age : " + event.tranche);
+
+            //////////// TEXTES
+            title_fr.setText(event.titre_fr);
+            adresse.setText(event.nom_du_lieu + "\n" + event.adresse + " (" + event.departement + ")");
+
+            if (StringHelper.notEmpty(event.description_fr)) {
+                description_fr.setText(event.description_fr);
             }
-            thematiques.setText(event.thematiques);
-            departement.setText(event.departement);
-            type_d_animation.setText(event.type_d_animation);
-            horaires_detailles_fr.setText(event.horaires_detailles_fr);
-            detail_des_conditions_fr.setText(event.detail_des_conditions_fr);
+
+            StringBuilder strbInfos = new StringBuilder();
+            if (!event.date_debut.equalsIgnoreCase(event.date_fin)) {
+                strbInfos.append("Du " + StringHelper.toDate(event.getCalendar(event.date_debut), "dd MMMM") + " au " + StringHelper.toDate(event.getCalendar(event.date_fin), "dd MMMM yyyy") + "\n");
+            }
+            if (StringHelper.notEmpty(event.horaires_detailles_fr)) {
+                strbInfos.append("Horaires :\n");
+                for (String s: event.horaires_detailles_fr.split("\n")) {
+                    String date = StringHelper.toDate(event.getCalendar(s.substring(0, s.indexOf(" -"))), "EEEE dd MMM");
+                    String heure = s.substring(s.indexOf("-")+2);
+                    strbInfos.append("   > " + date + " : " + heure + "\n");
+                }
+                strbInfos.append("\n");
+            }
+            if (StringHelper.notEmpty(event.tranche)) {
+                strbInfos.append("Ages : " + event.tranche + "\n");
+            }
+            if (StringHelper.notEmpty(event.type_d_animation)) {
+                strbInfos.append("Type d'animation : " + event.type_d_animation + "\n");
+            }
+            if (StringHelper.notEmpty(event.thematiques)) {
+                strbInfos.append("Thématiques : " + event.thematiques.replace("|", ", ") + "\n");
+            }
+            if (StringHelper.notEmpty(event.detail_des_conditions_fr)) {
+                strbInfos.append("Conditions : " + event.detail_des_conditions_fr + "\n");
+            }
+            if (StringHelper.notEmpty(event.inscription_necessaire) && event.inscription_necessaire.equalsIgnoreCase("Oui")) {
+                strbInfos.append("Inscription nécéssaire : " + event.lien_d_inscription + "\n");
+            }
+            infos.setText(strbInfos);
+
+            event_seekbar_remplissage.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    event_label_remplissage.setText(progress + "%");
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    tauxRemplissageInitial = seekBar.getProgress();
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE: break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    event_seekbar_remplissage.setProgress(tauxRemplissageInitial);
+                                    event_label_remplissage.setText(tauxRemplissageInitial + "%");
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    builder.setMessage("Valider le nouveau taux de remplissage de " + event_label_remplissage.getText() + " ?")
+                        .setPositiveButton("Oui", dialogClickListener)
+                        .setNegativeButton("Non", dialogClickListener)
+                        .show();
+                }
+            });
+
+            //////////// BOUTONS
+            if (StringHelper.notEmpty(event.telephone_du_lieu)) {
+                addInfosButton("Téléphoner").setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        IntentHelper.dialPhoneNumber(getActivity(), event.telephone_du_lieu);
+                    }
+                });
+            }
+
+            if (StringHelper.notEmpty(event.site_web_du_lieu)) {
+                addInfosButton("Site web").setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        IntentHelper.openWebPage(getActivity(), event.site_web_du_lieu);
+                    }
+                });
+            }
+
+            if (StringHelper.notEmpty(event.date_debut, event.date_fin)) {
+                addInfosButton("Agenda").setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        IntentHelper.addCalendarEvent(getActivity(), event);
+                    }
+                });
+            }
+
+            addInfosButton("Partager").setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    IntentHelper.share(getActivity(), event);
+                }
+            });
         }
 
         return view;
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+
+        EventPosition pos = event.getGeolocalisation();
+
+        map.addMarker(new MarkerOptions()
+                .position(pos.getPosition())
+                .title(event.titre_fr));
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(pos.getPosition(), 14));
+        map.getUiSettings().setZoomControlsEnabled(true);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    private Button addInfosButton(String text) {
+        Button button = new Button(getActivity());
+        button.setText(text);
+        event_infos_buttons.addView(button, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        return button;
     }
 }

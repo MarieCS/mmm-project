@@ -1,191 +1,259 @@
-<ScrollView
+<TabHost
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1">
+    android:layout_height="wrap_content"
+    android:id="@+id/event_tabHost">
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    tools:context="com.example.mcs.mmm_project.fragment.EventFragment">
-
-    <!-- <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" /> -->
-
-
-    <TextView
-        android:id="@+id/title_fr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:scrollHorizontally="false"
-        android:singleLine="false"
-        android:text="title_fr"
-        android:textAlignment="viewStart"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/thematiques"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingRight="10dp"
-            android:text="thematiques" />
-
-        <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:orientation="vertical">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/description_fr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingRight="10dp"
-                    android:text="description_fr" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="false"
-                    android:cropToPadding="true"
-                    android:maxHeight="200px"
-                    android:maxWidth="300px"
-                    android:minHeight="200px"
-                    android:minWidth="300px" />
-
-            </LinearLayout>
-
-        </TableRow>
-
-    </TableLayout>
-
-        <TextView
-            android:id="@+id/textView"
+        <TabWidget
+            android:id="@android:id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_weight="1"
-            android:text="Informations pratiques"
-            android:textSize="18sp" />
+            android:layout_marginBottom="10dp" />
 
-        <TableLayout
+        <FrameLayout
+            android:id="@android:id/tabcontent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_height="match_parent">
 
-            <TableRow
+            <LinearLayout
+                android:id="@+id/event_tab1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <ScrollView
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
-                    <TextView
-                        android:id="@+id/adresse"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:scrollHorizontally="false"
-                        android:singleLine="false"
-                        android:text="adresse" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        tools:context="com.example.mcs.mmm_project.fragment.EventFragment">
 
-                    <TextView
-                        android:id="@+id/ages"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Ages" />
+                        <!-- <android.support.v7.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="?attr/colorPrimary"
+                            android:minHeight="?attr/actionBarSize"
+                            android:theme="?attr/actionBarTheme" /> -->
 
-                    <TextView
-                        android:id="@+id/departement"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Departement" />
 
-                    <TextView
-                        android:id="@+id/detail_des_conditions_fr"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="detail_des_conditions_fr" />
+                        <TextView
+                            android:id="@+id/title_fr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="textMultiLine"
+                            android:scrollHorizontally="false"
+                            android:singleLine="false"
+                            android:text="title_fr"
+                            android:textAlignment="viewStart"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/type_d_animation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="type_d_animation" />
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
 
-                </LinearLayout>
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                <LinearLayout
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/description_fr"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:paddingRight="10dp"
+                                        android:text="description_fr" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:adjustViewBounds="false"
+                                        android:cropToPadding="true"
+                                        android:maxHeight="200px"
+                                        android:maxWidth="300px"
+                                        android:minHeight="200px"
+                                        android:minWidth="300px" />
+
+                                </LinearLayout>
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_weight="1"
+                            android:text="Informations pratiques"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/infos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="infos" />
+
+                        <LinearLayout
+                            android:id="@+id/event_infos_buttons"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_weight="1"
+                            android:text="Localisation"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/adresse"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:scrollHorizontally="false"
+                            android:singleLine="false"
+                            android:text="adresse" />
+
+                        <com.google.android.gms.maps.MapView
+                            android:id="@+id/mapView"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/event_tab2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:text="Evaluer cet événement"
+                    android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/inscription"
-                        android:layout_width="match_parent"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RatingBar
+                        android:id="@+id/event_ratingBar"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="inscription" />
+                        android:layout_centerHorizontal="true"
+                        android:max="5"
+                        android:min="1"
+                        android:numStars="5" />
+                </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/dates"
-                        android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="286 utilisateurs ont évalués cet événement"
+                    android:textSize="18sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RatingBar
+                        android:id="@+id/event_usersRatingBar"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Dates" />
+                        android:layout_centerHorizontal="true"
+                        android:isIndicator="true"
+                        android:max="5"
+                        android:min="1"
+                        android:numStars="5"
+                        android:rating="4" />
+                </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/horaires_detailles_fr"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="horaires_detailles_fr" />
+            </LinearLayout>
 
-                </LinearLayout>
+            <LinearLayout
+                android:id="@+id/event_tab3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-            </TableRow>
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Taux de remplissage du lieu"
+                    android:textSize="18sp" />
 
-        </TableLayout>
+                <SeekBar
+                    android:id="@+id/event_seekbar_remplissage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:min="0" />
 
+                <TextView
+                    android:id="@+id/event_label_remplissage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0%"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+        </FrameLayout>
     </LinearLayout>
-</ScrollView>
+</TabHost>
