@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mcs.mmm_project.pojo.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -59,45 +58,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        Query query = mDatabase.orderByKey().limitToFirst(500);
         setUpClusterer();
 
         mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
         mMap.setOnInfoWindowClickListener(mClusterManager);
 
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                DataSnapshot coordinates = dataSnapshot.child("geometry").child("coordinates");
-                Double lon = (Double) coordinates.child("0").getValue();
-                Double lat = (Double) coordinates.child("1").getValue();
-
-                Event event = dataSnapshot.child("properties").getValue(Event.class);
-
-                mClusterManager.addItem(new EventPosition(lat, lon, event));
-                mClusterManager.cluster();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        new GetData(mDatabase, mClusterManager).execute();
     }
 
 
