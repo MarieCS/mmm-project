@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import com.example.mcs.mmm_project.R;
+import com.example.mcs.mmm_project.helper.DateHelper;
 import com.example.mcs.mmm_project.helper.FirebaseHelper;
 import com.example.mcs.mmm_project.helper.IntentHelper;
 import com.example.mcs.mmm_project.helper.StringHelper;
@@ -34,6 +35,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
 
 public class EventFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.title_fr) TextView title_fr;
@@ -117,14 +120,17 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
 
             StringBuilder strbInfos = new StringBuilder();
             if (!event.date_debut.equalsIgnoreCase(event.date_fin)) {
-                strbInfos.append("Du " + StringHelper.toDate(event.getCalendar(event.date_debut), "dd MMMM") + " au " + StringHelper.toDate(event.getCalendar(event.date_fin), "dd MMMM yyyy") + "\n");
+                strbInfos.append("Du " + DateHelper.toDate(event.getStartDatetime(), "dd MMMM") + " au " + DateHelper.toDate(event.getEndDatetime(), "dd MMMM yyyy") + "\n");
             }
-            if (StringHelper.notEmpty(event.horaires_detailles_fr)) {
+            if (StringHelper.notEmpty(event.horaires_iso)) {
                 strbInfos.append("Horaires :\n");
-                for (String s: event.horaires_detailles_fr.split("\n")) {
-                    String date = StringHelper.toDate(event.getCalendar(s.substring(0, s.indexOf(" -"))), "EEEE dd MMM");
-                    String heure = s.substring(s.indexOf("-")+2);
-                    strbInfos.append("   > " + date + " : " + heure + "\n");
+                for (String isoDay: event.horaires_iso.split("\n")) { // Par jour
+                    Calendar ouverture = DateHelper.getFrom(isoDay.substring(0, DateHelper.ISO8601_LENGTH));
+                    Calendar fermeture = DateHelper.getFrom(isoDay.substring(DateHelper.ISO8601_LENGTH+1));
+
+                    strbInfos.append("   > " + DateHelper.toDate(ouverture, "EEEE dd MMM") + " : ");
+                    strbInfos.append("de " + DateHelper.toDate(ouverture, "HH:mm") + " ");
+                    strbInfos.append("à " + DateHelper.toDate(fermeture, "HH:mm") + "\n");
                 }
                 strbInfos.append("\n");
             }

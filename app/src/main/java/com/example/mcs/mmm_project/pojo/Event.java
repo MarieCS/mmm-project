@@ -1,5 +1,6 @@
 package com.example.mcs.mmm_project.pojo;
 
+import com.example.mcs.mmm_project.helper.DateHelper;
 import com.example.mcs.mmm_project.helper.StringHelper;
 import com.j256.ormlite.field.DatabaseField;
 
@@ -59,7 +60,8 @@ public class Event implements Serializable {
     public Object geolocalisation;
     @DatabaseField
     public String horaires_detailles_fr;
-//    public String horaires_iso;
+    @DatabaseField
+    public String horaires_iso;
     @DatabaseField(id = true)
     public String identifiant;
 //    public String identifiant_du_lieu;
@@ -159,16 +161,12 @@ public class Event implements Serializable {
         }
     }
 
-    public Calendar getCalendar(String value) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM yyyy", Locale.FRANCE);
-        try {
-            cal.setTime(sdf.parse(value.replace("1er", "1")));
-            return cal;
-        } catch (ParseException e) {
-            Logger.getGlobal().warning(e.toString());
-            return null;
-        }
+    public Calendar getStartDatetime() {
+        return DateHelper.getFrom(horaires_iso.substring(0, DateHelper.ISO8601_LENGTH));
+    }
+
+    public Calendar getEndDatetime() {
+        return DateHelper.getFrom(horaires_iso.substring(horaires_iso.length() - DateHelper.ISO8601_LENGTH));
     }
 
     public float getEvaluationAvg() {

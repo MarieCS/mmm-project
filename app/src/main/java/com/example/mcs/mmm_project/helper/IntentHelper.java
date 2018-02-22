@@ -30,8 +30,8 @@ public class IntentHelper {
                 .putExtra(CalendarContract.Events.TITLE, event.titre_fr)
                 .putExtra(CalendarContract.Events.DESCRIPTION, event.description_longue_fr)
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, event.getGeolocalisation().getPosition().toString().substring(10).replace(")", ""))
-                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.getCalendar(event.date_debut).getTimeInMillis())
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.getCalendar(event.date_fin).getTimeInMillis());
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.getStartDatetime().getTimeInMillis())
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.getEndDatetime().getTimeInMillis());
         if (intent.resolveActivity(activity.getPackageManager()) != null) {
             activity.startActivity(intent);
         }
