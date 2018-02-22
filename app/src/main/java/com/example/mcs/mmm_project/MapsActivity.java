@@ -1,11 +1,14 @@
 package com.example.mcs.mmm_project;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.mcs.mmm_project.map.MapClusterRenderer;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,13 +26,16 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import com.example.mcs.mmm_project.pojo.EventPosition;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ClusterManager.OnClusterItemInfoWindowClickListener<EventPosition> {
 
     private GoogleMap mMap;
     private DatabaseReference mDatabase;
     private ClusterManager<EventPosition> mClusterManager;
     private EventPosition clickedClusterItem;
-
+    private List<EventPosition> eventPositionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("features");
+
+        eventPositionList = new ArrayList<>();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -63,9 +71,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
         mMap.setOnInfoWindowClickListener(mClusterManager);
 
-        new GetData(mDatabase, mClusterManager).execute();
-    }
+        /*mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                if(mMap.getCameraPosition().zoom > 20) shouldRenderClustering = false;
+                else shouldRenderClustering = true;
+            }
+        });*/
 
+        Query query = mDatabase.orderByKey();
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                DataSnapshot coordinates = dataSnapshot.child("geometry").child("coordinates");
+                if(coordinates.getValue() != null){
+                    Double lon = (Double) coordinates.child("0").getValue();
+                    Double lat = (Double) coordinates.child("1").getValue();
+
+                    Event event = dataSnapshot.child("properties").getValue(Event.class);
+
+                    EventPosition eventPosition = new EventPosition(lat, lon, event);
+                    /*if(!eventPositionList.contains(eventPosition)){
+                        eventPositionList.add(eventPosition);*/
+
+                        mClusterManager.addItem(eventPosition);
+                        mClusterManager.cluster();
+                    //}
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+    }
 
 
     private void setUpClusterer() {
@@ -88,6 +136,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(
                 new AdapterEventPosition());
+
+        /*mClusterManager.setRenderer(new DefaultClusterRenderer<EventPosition>(this, mMap, mClusterManager){
+            @Override
+            protected boolean shouldRenderAsCluster(Cluster<EventPosition> cluster) {
+                return shouldRenderClustering;
+            }
+        });*/
 
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
@@ -113,10 +168,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public View getInfoWindow(Marker marker) {
 
-            TextView titre = ((TextView) myContentsView
-                    .findViewById(R.id.txtTitle));
-            TextView adresse = ((TextView) myContentsView
-                    .findViewById(R.id.txtSnippet));
+            TextView titre = myContentsView.findViewById(R.id.txtTitle);
+            TextView adresse = myContentsView.findViewById(R.id.txtSnippet);
 
             titre.setText(clickedClusterItem.getEvent().titre_fr);
             adresse.setText(clickedClusterItem.getEvent().adresse);

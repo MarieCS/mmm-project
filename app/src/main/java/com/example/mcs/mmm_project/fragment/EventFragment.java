@@ -18,8 +18,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import com.example.mcs.mmm_project.GetData;
-import com.example.mcs.mmm_project.MapsActivity;
 import com.example.mcs.mmm_project.R;
 import com.example.mcs.mmm_project.helper.FirebaseHelper;
 import com.example.mcs.mmm_project.helper.IntentHelper;
@@ -31,13 +29,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.clustering.ClusterManager;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 public class EventFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.title_fr) TextView title_fr;

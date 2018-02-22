@@ -1,5 +1,7 @@
 package com.example.mcs.mmm_project.pojo;
 
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
