@@ -1,6 +1,7 @@
 package com.example.mcs.mmm_project.pojo;
 
 import com.example.mcs.mmm_project.helper.StringHelper;
+import com.j256.ormlite.field.DatabaseField;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -14,37 +15,45 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+
 public class Event implements Serializable {
     private String firebaseIndex;
 
+    @DatabaseField
     public String adresse;
     public int age_maximum;
     public int age_minimum;
     public String ages;
+    @DatabaseField
     public String apercu;
     public String animateurs;
     public String code_postal;
+    @DatabaseField
     public String date_debut;
     public String date_debut_jour;
     public String date_debut_mois;
+    @DatabaseField
     public String date_fin;
-    public String date_fin_jour;
-    public String date_fin_mois;
-    public String dates;
+//    public String date_fin_jour;
+//    public String date_fin_mois;
+//    public String dates;
     public String departement;
-    public String derniere_date;
-    public String derniere_fermeture;
-    public String derniere_mise_a_jour;
-    public String derniere_ouverture;
+//    public String derniere_date;
+//    public String derniere_fermeture;
+//    public String derniere_mise_a_jour;
+//    public String derniere_ouverture;
+    @DatabaseField
     public String description_fr;
     public String description_longue_fr;
-    public String description_longue_html_fr;
+//    public String description_longue_html_fr;
     public String detail_des_conditions_fr;
     public Object geolocalisation;
     public String horaires_detailles_fr;
-    public String horaires_iso;
+//    public String horaires_iso;
+    @DatabaseField(id = true)
     public String identifiant;
-    public String identifiant_du_lieu;
+//    public String identifiant_du_lieu;
+    @DatabaseField
     public String image;
     public String image_source;
     public String inscription_necessaire;
@@ -63,12 +72,33 @@ public class Event implements Serializable {
     public String statut;
     public String telephone_du_lieu;
     public String thematiques;
+//    public String image_source;
+//    public String inscription_necessaire;
+//    public String lien;
+//    public String lien_d_inscription;
+//    public int nb_evenements;
+//    public String nom_du_lieu;
+//    public String organisateur;
+//    public String pays;
+//    public String publics_concernes;
+//    public String region;
+//    public String resume_dates_fr;
+//    public String resume_horaires_fr;
+//    public String selection;
+//    public String statut;
+//    public String telephone_du_lieu;
+//    public String thematiques;
+    @DatabaseField
     public String titre_fr;
+    @DatabaseField
     public String tranche;
     public String type_d_animation;
     public String ville;
     public int taux_remplissage;
     public Map<String, Evaluation> evaluations = new HashMap<>(); // UUID, Evaluation
+
+//    public String type_d_animation;
+//    public String ville;
 
     public Event() { }
 
