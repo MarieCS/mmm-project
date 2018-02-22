@@ -124,6 +124,14 @@
                             android:textSize="18sp" />
 
                         <TextView
+                            android:id="@+id/event_taux_remplissage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="event_taux_remplissage"
+                            android:textStyle="bold" />
+
+                        <TextView
                             android:id="@+id/infos"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -189,7 +197,7 @@
                     android:layout_height="match_parent">
 
                     <RatingBar
-                        android:id="@+id/event_ratingBar"
+                        android:id="@+id/event_user_ratingBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -199,11 +207,11 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/event_users_evaluations"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:text="286 utilisateurs ont évalués cet événement"
+                    android:text="X utilisateurs ont évalués cet événement"
                     android:textSize="18sp" />
 
                 <RelativeLayout
@@ -211,7 +219,7 @@
                     android:layout_height="match_parent">
 
                     <RatingBar
-                        android:id="@+id/event_usersRatingBar"
+                        android:id="@+id/event_users_RatingBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -247,7 +255,7 @@
                     android:min="0" />
 
                 <TextView
-                    android:id="@+id/event_label_remplissage"
+                    android:id="@+id/event_seekbar_label_remplissage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0%"

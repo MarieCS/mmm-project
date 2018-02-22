@@ -1,14 +1,22 @@
 package com.example.mcs.mmm_project.pojo;
 
+import com.example.mcs.mmm_project.helper.StringHelper;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class Event implements Serializable {
+    private String firebaseIndex;
+
     public String adresse;
     public int age_maximum;
     public int age_minimum;
@@ -59,12 +67,26 @@ public class Event implements Serializable {
     public String tranche;
     public String type_d_animation;
     public String ville;
+    public int taux_remplissage;
+    public Map<String, Evaluation> evaluations = new HashMap<>(); // UUID, Evaluation
 
     public Event() { }
 
+    public String getFirebaseIndex() {
+        return firebaseIndex;
+    }
+
+    public void setFirebaseIndex(String firebaseIndex) {
+        this.firebaseIndex = firebaseIndex;
+    }
+
+    public Collection<Evaluation> getEvaluations() {
+        return evaluations.values();
+    }
+
     @Override
     public String toString() {
-        return "ID: " + identifiant + ", " + titre_fr;
+        return firebaseIndex + ": " + titre_fr;
     }
 
     public EventPosition getGeolocalisation() {
@@ -88,5 +110,26 @@ public class Event implements Serializable {
             Logger.getGlobal().warning(e.toString());
             return null;
         }
+    }
+
+    public float getEvaluationAvg() {
+        float avg = 0;
+        int count = 0;
+        for (Evaluation e: getEvaluations()) {
+            if (e.rating != 0) {
+                avg += e.rating;
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            return avg / count;
+        }
+        return 0;
+    }
+
+    public void addUserEvaluation(Evaluation evaluation) {
+        System.out.println("AddEval : " + StringHelper.getUniqueID());
+        evaluations.put(StringHelper.getUniqueID(), evaluation);
     }
 }

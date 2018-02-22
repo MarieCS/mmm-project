@@ -21,8 +21,10 @@ import butterknife.Unbinder;
 import com.example.mcs.mmm_project.GetData;
 import com.example.mcs.mmm_project.MapsActivity;
 import com.example.mcs.mmm_project.R;
+import com.example.mcs.mmm_project.helper.FirebaseHelper;
 import com.example.mcs.mmm_project.helper.IntentHelper;
 import com.example.mcs.mmm_project.helper.StringHelper;
+import com.example.mcs.mmm_project.pojo.Evaluation;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.example.mcs.mmm_project.pojo.EventPosition;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,15 +48,19 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.mapView) MapView mapView;
     @BindView(R.id.event_tabHost) TabHost tabHost;
     @BindView(R.id.event_infos_buttons) LinearLayout event_infos_buttons;
-    @BindView(R.id.event_ratingBar) RatingBar event_ratingBar;
     @BindView(R.id.event_seekbar_remplissage) SeekBar event_seekbar_remplissage;
-    @BindView(R.id.event_label_remplissage) TextView event_label_remplissage;
+    @BindView(R.id.event_seekbar_label_remplissage) TextView event_seekbar_label_remplissage;
+    @BindView(R.id.event_taux_remplissage) TextView event_taux_remplissage;
+    @BindView(R.id.event_user_ratingBar) RatingBar event_user_ratingBar;
+    @BindView(R.id.event_users_evaluations) TextView event_users_evaluations;
+    @BindView(R.id.event_users_RatingBar) RatingBar event_users_RatingBar;
 
     private static final String ARG_EVENT = "event";
     private Event event;
     private Unbinder unbinder;
     private GoogleMap map;
     private Integer tauxRemplissageInitial;
+    private Integer tauxRemplissageCourant;
 
     public EventFragment() {
         // Required empty public constructor
@@ -137,40 +143,7 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
                 strbInfos.append("Inscription nécéssaire : " + event.lien_d_inscription + "\n");
             }
             infos.setText(strbInfos);
-
-            event_seekbar_remplissage.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    event_label_remplissage.setText(progress + "%");
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                    tauxRemplissageInitial = seekBar.getProgress();
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which){
-                                case DialogInterface.BUTTON_POSITIVE: break;
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    event_seekbar_remplissage.setProgress(tauxRemplissageInitial);
-                                    event_label_remplissage.setText(tauxRemplissageInitial + "%");
-                                    break;
-                            }
-                        }
-                    };
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setMessage("Valider le nouveau taux de remplissage de " + event_label_remplissage.getText() + " ?")
-                        .setPositiveButton("Oui", dialogClickListener)
-                        .setNegativeButton("Non", dialogClickListener)
-                        .show();
-                }
-            });
+            event_taux_remplissage.setText("Taux de remplissage " + (StringHelper.empty(event.taux_remplissage + "") ? " inconnu" : " : " + event.taux_remplissage + "%"));
 
             //////////// BOUTONS
             if (StringHelper.notEmpty(event.telephone_du_lieu)) {
@@ -204,6 +177,72 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public void onClick(View v) {
                     IntentHelper.share(getActivity(), event);
+                }
+            });
+
+            //////////////// MENU EVALUATION
+            String lblUsersEvaluations;
+            if (event.getEvaluations().size() == 0) {
+                lblUsersEvaluations = "Aucun utilisateur a évalué cet événement";
+            }
+            else if (event.getEvaluations().size() == 1) {
+                lblUsersEvaluations = event.getEvaluations().size() + " utilisateur a évalué cet événement";
+            }
+            else {
+                lblUsersEvaluations = event.getEvaluations().size() + " utilisateurs ont évalués cet événement";
+            }
+            event_users_evaluations.setText(lblUsersEvaluations);
+            event_users_RatingBar.setRating(event.getEvaluationAvg());
+
+            event_user_ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    System.out.println(rating);
+                    event.addUserEvaluation(new Evaluation(rating));
+                    FirebaseHelper.update(event);
+                }
+            });
+
+            //////////////// MENU ORGANISATION
+            event_seekbar_label_remplissage.setText(event.taux_remplissage + "%");
+            event_seekbar_remplissage.setProgress(event.taux_remplissage);
+            event_seekbar_remplissage.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    tauxRemplissageCourant = progress;
+                    event_seekbar_label_remplissage.setText(progress + "%");
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    tauxRemplissageInitial = seekBar.getProgress();
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    if (tauxRemplissageCourant != tauxRemplissageInitial) {
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        event.taux_remplissage = tauxRemplissageCourant;
+                                        FirebaseHelper.update(event);
+                                        break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        event_seekbar_remplissage.setProgress(tauxRemplissageInitial);
+                                        event_seekbar_label_remplissage.setText(tauxRemplissageInitial + "%");
+                                        break;
+                                }
+                            }
+                        };
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                        builder.setMessage("Valider le nouveau taux de remplissage de " + tauxRemplissageCourant + "% ?")
+                            .setPositiveButton("Oui", dialogClickListener)
+                            .setNegativeButton("Non", dialogClickListener)
+                            .show();
+                    }
                 }
             });
         }
