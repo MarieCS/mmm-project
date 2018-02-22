@@ -5,17 +5,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class FirebaseHelper {
     public static void update(Event event) {
         DatabaseReference fbEvent = FirebaseDatabase.getInstance().getReference("features").child(event.getFirebaseIndex()).child("properties");
 
-        String uuid = UUID.randomUUID().toString();
-        System.out.println("uptdate : " + uuid);
         Map<String, Object> updateFields = new HashMap<>();
         updateFields.put("taux_remplissage", event.taux_remplissage);
-        System.out.println(event.evaluations.get(uuid));
+
+        String uuid = StringHelper.getUniqueID();
         updateFields.put("evaluations/" + uuid, event.evaluations.get(uuid));
 
         fbEvent.updateChildren(updateFields);

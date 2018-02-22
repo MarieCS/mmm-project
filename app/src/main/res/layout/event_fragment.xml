@@ -200,7 +200,7 @@
                 android:paddingRight="10dp">
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/event_user_ratingLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Evaluer cet événement"
@@ -216,12 +216,14 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:max="5"
-                        android:min="1"
-                        android:numStars="5" />
+                        android:min="0"
+                        android:numStars="5"
+                        android:rating="0"
+                        android:stepSize="1" />
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/event_users_evaluations"
+                    android:id="@+id/event_users_ratingLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
@@ -239,9 +241,9 @@
                         android:layout_centerHorizontal="true"
                         android:isIndicator="true"
                         android:max="5"
-                        android:min="1"
+                        android:min="0"
                         android:numStars="5"
-                        android:rating="4" />
+                        android:rating="0" />
                 </RelativeLayout>
 
             </LinearLayout>

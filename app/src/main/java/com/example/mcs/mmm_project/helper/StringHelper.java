@@ -36,8 +36,13 @@ public class StringHelper {
      */
     public synchronized static String getUniqueID() {
         if (uniqueID == null) {
-            SharedPreferences sharedPrefs = MainActivity.getAppContext().getSharedPreferences(PREF_UNIQUE_ID, Context.MODE_PRIVATE);
-            uniqueID = sharedPrefs.getString(PREF_UNIQUE_ID, null);
+            SharedPreferences sharedPrefs;
+            try {
+                sharedPrefs = MainActivity.getAppContext().getSharedPreferences(PREF_UNIQUE_ID, Context.MODE_PRIVATE);
+                uniqueID = sharedPrefs.getString(PREF_UNIQUE_ID, null);
+            } catch (Exception e) {
+                return "NO_UNIQUE_ID";
+            }
 
             if (uniqueID == null) {
                 uniqueID = UUID.randomUUID().toString();

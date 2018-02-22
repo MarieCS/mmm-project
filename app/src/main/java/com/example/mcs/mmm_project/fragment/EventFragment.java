@@ -49,8 +49,11 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.event_seekbar_remplissage) SeekBar event_seekbar_remplissage;
     @BindView(R.id.event_seekbar_label_remplissage) TextView event_seekbar_label_remplissage;
     @BindView(R.id.event_taux_remplissage) TextView event_taux_remplissage;
+
+    // Evaluation
+    @BindView(R.id.event_user_ratingLabel) TextView event_user_ratingLabel;
     @BindView(R.id.event_user_ratingBar) RatingBar event_user_ratingBar;
-    @BindView(R.id.event_users_evaluations) TextView event_users_evaluations;
+    @BindView(R.id.event_users_ratingLabel) TextView event_users_ratingLabel;
     @BindView(R.id.event_users_RatingBar) RatingBar event_users_RatingBar;
 
     private static final String ARG_EVENT = "event";
@@ -141,7 +144,7 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
                 strbInfos.append("Inscription nécéssaire : " + event.lien_d_inscription + "\n");
             }
             infos.setText(strbInfos);
-            event_taux_remplissage.setText("Taux de remplissage " + (StringHelper.empty(event.taux_remplissage + "") ? " inconnu" : " : " + event.taux_remplissage + "%"));
+            updateLabelTauxRemplissage();
 
             //////////// BOUTONS
             ajoutAuParcours.setOnClickListener(new View.OnClickListener() {
@@ -200,25 +203,14 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
             });
 
             //////////////// MENU EVALUATION
-            String lblUsersEvaluations;
-            if (event.getEvaluations().size() == 0) {
-                lblUsersEvaluations = "Aucun utilisateur a évalué cet événement";
-            }
-            else if (event.getEvaluations().size() == 1) {
-                lblUsersEvaluations = event.getEvaluations().size() + " utilisateur a évalué cet événement";
-            }
-            else {
-                lblUsersEvaluations = event.getEvaluations().size() + " utilisateurs ont évalués cet événement";
-            }
-            event_users_evaluations.setText(lblUsersEvaluations);
-            event_users_RatingBar.setRating(event.getEvaluationAvg());
+            updateRatingBars();
 
             event_user_ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                    System.out.println(rating);
                     event.addUserEvaluation(new Evaluation(rating));
                     FirebaseHelper.update(event);
+                    updateRatingBars();
                 }
             });
 
@@ -247,6 +239,7 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
                                     case DialogInterface.BUTTON_POSITIVE:
                                         event.taux_remplissage = tauxRemplissageCourant;
                                         FirebaseHelper.update(event);
+                                        updateLabelTauxRemplissage();
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         event_seekbar_remplissage.setProgress(tauxRemplissageInitial);
@@ -295,5 +288,35 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
         button.setText(text);
         event_infos_buttons.addView(button, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         return button;
+    }
+
+    private void updateRatingBars() {
+        Evaluation userEval = event.evaluations.get(StringHelper.getUniqueID());
+        if (userEval == null || userEval.rating == 0) {
+            event_user_ratingLabel.setText("Vous n'avez pas évalué cet événement");
+            event_user_ratingBar.setRating(0);
+        }
+        else {
+            event_user_ratingLabel.setText("Vous avez noté cet événement à " + (userEval.rating + "").substring(0,1) + "/" + event_user_ratingBar.getNumStars() + " étoiles");
+            event_user_ratingBar.setRating(userEval.rating);
+        }
+
+        String lblUsersEvaluations;
+        float avg = event.getEvaluationAvg();
+        if (event.getEvaluationStarCount() == 0) {
+            lblUsersEvaluations = "Aucun utilisateur a évalué cet événement";
+        }
+        else if (event.getEvaluationStarCount() == 1) {
+            lblUsersEvaluations = event.getEvaluationStarCount() + " utilisateur a évalué cet événement (" + (avg+"00").substring(0,3) + "/" + event_users_RatingBar.getNumStars() + ")";
+        }
+        else {
+            lblUsersEvaluations = event.getEvaluationStarCount() + " utilisateurs ont évalués cet événement (" + (avg+"00").substring(0,3) + "/" + event_users_RatingBar.getNumStars() + ")";
+        }
+        event_users_ratingLabel.setText(lblUsersEvaluations);
+        event_users_RatingBar.setRating(avg);
+    }
+
+    private void updateLabelTauxRemplissage() {
+        event_taux_remplissage.setText("Taux de remplissage " + (StringHelper.empty(event.taux_remplissage + "") ? " inconnu" : " : " + event.taux_remplissage + "%"));
     }
 }

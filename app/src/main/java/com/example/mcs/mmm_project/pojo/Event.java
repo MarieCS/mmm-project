@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 
@@ -188,8 +187,17 @@ public class Event implements Serializable {
         return 0;
     }
 
+    public int getEvaluationStarCount() {
+        int count = 0;
+        for (Evaluation e: getEvaluations()) {
+            if (e.rating != 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public void addUserEvaluation(Evaluation evaluation) {
-        System.out.println("AddEval : " + StringHelper.getUniqueID());
         evaluations.put(StringHelper.getUniqueID(), evaluation);
     }
 }

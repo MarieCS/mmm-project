@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.mcs.mmm_project.adapter.SQLDatabaseHelper;
+import com.example.mcs.mmm_project.fragment.EventListFragment;
 import com.example.mcs.mmm_project.fragment.EventSearch;
 import com.example.mcs.mmm_project.pojo.Event;
 
@@ -26,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-//        EventListFragment fragment = new EventListFragment();
-        Fragment fragment = new EventSearch();
+        EventListFragment fragment = new EventListFragment();
+        //Fragment fragment = new EventSearch();
         ft.add(R.id.fragment, fragment);
         ft.commit();
         sqlDatabaseHelper = new SQLDatabaseHelper(this);
