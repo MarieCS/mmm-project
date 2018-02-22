@@ -40,6 +40,7 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.image) ImageView image;
     @BindView(R.id.mapView) MapView mapView;
     @BindView(R.id.event_tabHost) TabHost tabHost;
+    @BindView(R.id.ajoutAuParcours) Button ajoutAuParcours;
     @BindView(R.id.event_infos_buttons) LinearLayout event_infos_buttons;
     @BindView(R.id.event_seekbar_remplissage) SeekBar event_seekbar_remplissage;
     @BindView(R.id.event_seekbar_label_remplissage) TextView event_seekbar_label_remplissage;
@@ -139,6 +140,13 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
             event_taux_remplissage.setText("Taux de remplissage " + (StringHelper.empty(event.taux_remplissage + "") ? " inconnu" : " : " + event.taux_remplissage + "%"));
 
             //////////// BOUTONS
+            ajoutAuParcours.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    
+                }
+            });
+
             if (StringHelper.notEmpty(event.telephone_du_lieu)) {
                 addInfosButton("Téléphoner").setOnClickListener(new View.OnClickListener() {
                     @Override
