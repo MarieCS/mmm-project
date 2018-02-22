@@ -14,6 +14,8 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -25,6 +27,7 @@ import com.example.mcs.mmm_project.helper.StringHelper;
 import com.example.mcs.mmm_project.pojo.Evaluation;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.example.mcs.mmm_project.pojo.EventPosition;
+import com.example.mcs.mmm_project.pojo.Parcours;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -41,6 +44,7 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.mapView) MapView mapView;
     @BindView(R.id.event_tabHost) TabHost tabHost;
     @BindView(R.id.ajoutAuParcours) Button ajoutAuParcours;
+    @BindView(R.id.enleverDuParcours) Button enleverDuParcours;
     @BindView(R.id.event_infos_buttons) LinearLayout event_infos_buttons;
     @BindView(R.id.event_seekbar_remplissage) SeekBar event_seekbar_remplissage;
     @BindView(R.id.event_seekbar_label_remplissage) TextView event_seekbar_label_remplissage;
@@ -143,7 +147,21 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
             ajoutAuParcours.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    
+                    Parcours.getInstance().addEvent(event);
+                    Toast.makeText(getContext(), "Evenement ajouté au parcours", Toast.LENGTH_LONG).show();
+                    ajoutAuParcours.setVisibility(View.GONE);
+                    enleverDuParcours.setVisibility(View.VISIBLE);
+                }
+            });
+
+            enleverDuParcours.setVisibility(View.GONE);
+            enleverDuParcours.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Parcours.getInstance().removeEvent(event);
+                    Toast.makeText(getContext(), "Evenement enlevé du parcours", Toast.LENGTH_LONG).show();
+                    ajoutAuParcours.setVisibility(View.VISIBLE);
+                    enleverDuParcours.setVisibility(View.GONE);
                 }
             });
 

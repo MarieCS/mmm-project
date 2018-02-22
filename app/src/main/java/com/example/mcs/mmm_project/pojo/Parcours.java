@@ -1,5 +1,6 @@
 package com.example.mcs.mmm_project.pojo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,8 +11,16 @@ public class Parcours {
 
     private List<Event> eventList;
 
-    private static final Parcours parcours = new Parcours();
-    public static Parcours getInstance(){return parcours;}
+    private static Parcours parcours;
+
+    private Parcours(){
+        eventList = new ArrayList<>();
+    }
+
+    public static Parcours getInstance(){
+        if(parcours == null) parcours = new Parcours();
+        return parcours;
+    }
 
     public List<Event> getParcours(){
         return eventList;
