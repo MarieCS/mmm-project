@@ -16,13 +16,13 @@ Lien des données pour Firebase (Choisir GeoJSON ou JSON) :
 ## TODO
 * OK : Liste des évenements (liste : RecyclerView, ev : CardView)
 * EC : Carte interactive (évenements sur la carte)
-* ---- : Recherche des évenements (lieu, thème, date, mot clés) > Popup évenement
+* EC : Recherche des évenements (lieu, thème, date, mot clés) > Popup évenement
 ___
-* EC : Fiche de l'évenement
-* ---- : Lier l'app avec les mails, agenda, téléphone, réseau social, itinéraire...)
-* ---- : Evaluation des évenements 
+* OK : Fiche de l'évenement
+* OK : Lier l'app avec les mails, agenda, téléphone, réseau social, itinéraire...)
+* OK : Evaluation des évenements 
 ___
 
-* ---- : Créer le rôle Organisateur > MAJ du taux de remplissage d'un lieu
-* ---- : Créer des parcours entre évenements > Publier les parcours
+* OK : Créer le rôle Organisateur > MAJ du taux de remplissage d'un lieu
+* EC : Créer des parcours entre évenements > Publier les parcours
 * ---- : Une fonction supplémentaire
