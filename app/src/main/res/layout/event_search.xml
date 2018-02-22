@@ -3,23 +3,23 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <EditText
         android:id="@+id/lieu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:hint="Lieu" />
 
-    <TextView
+    <EditText
         android:id="@+id/theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:hint="Theme" />
 
-    <TextView
+    <EditText
         android:id="@+id/mot_clef"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:hint="Mot clef" />
 
     <Button
         android:id="@+id/submit"

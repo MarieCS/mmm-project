@@ -11,8 +11,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -30,7 +28,7 @@ public class SQLDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Context context;
     private Dao<Event, String> eventDAO;
     private static final String DB_NAME = "event_database";
-    private static final int VERSION = 6;
+    private static final int VERSION = 8;
     private DatabaseReference mDatabase;
 
     public SQLDatabaseHelper(Context context) {

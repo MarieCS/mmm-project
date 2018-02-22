@@ -21,22 +21,30 @@ public class Event implements Serializable {
 
     @DatabaseField
     public String adresse;
+    @DatabaseField
     public int age_maximum;
+    @DatabaseField
     public int age_minimum;
+    @DatabaseField
     public String ages;
     @DatabaseField
     public String apercu;
+    @DatabaseField
     public String animateurs;
+    @DatabaseField
     public String code_postal;
     @DatabaseField
     public String date_debut;
+    @DatabaseField
     public String date_debut_jour;
+    @DatabaseField
     public String date_debut_mois;
     @DatabaseField
     public String date_fin;
 //    public String date_fin_jour;
 //    public String date_fin_mois;
 //    public String dates;
+    @DatabaseField
     public String departement;
 //    public String derniere_date;
 //    public String derniere_fermeture;
@@ -44,10 +52,13 @@ public class Event implements Serializable {
 //    public String derniere_ouverture;
     @DatabaseField
     public String description_fr;
+    @DatabaseField
     public String description_longue_fr;
 //    public String description_longue_html_fr;
+    @DatabaseField
     public String detail_des_conditions_fr;
     public Object geolocalisation;
+    @DatabaseField
     public String horaires_detailles_fr;
 //    public String horaires_iso;
     @DatabaseField(id = true)
@@ -55,22 +66,38 @@ public class Event implements Serializable {
 //    public String identifiant_du_lieu;
     @DatabaseField
     public String image;
+    @DatabaseField
     public String image_source;
+    @DatabaseField
     public String inscription_necessaire;
+    @DatabaseField
     public String lien;
+    @DatabaseField
     public String lien_d_inscription;
     public int nb_evenements;
+    @DatabaseField
     public String nom_du_lieu;
+    @DatabaseField
     public String organisateur;
+    @DatabaseField
     public String pays;
+    @DatabaseField
     public String publics_concernes;
+    @DatabaseField
     public String region;
+    @DatabaseField
     public String resume_dates_fr;
+    @DatabaseField
     public String resume_horaires_fr;
+    @DatabaseField
     public String selection;
+    @DatabaseField
     public String site_web_du_lieu;
+    @DatabaseField
     public String statut;
+    @DatabaseField
     public String telephone_du_lieu;
+    @DatabaseField
     public String thematiques;
 //    public String image_source;
 //    public String inscription_necessaire;
@@ -92,8 +119,11 @@ public class Event implements Serializable {
     public String titre_fr;
     @DatabaseField
     public String tranche;
+    @DatabaseField
     public String type_d_animation;
+    @DatabaseField
     public String ville;
+    @DatabaseField
     public int taux_remplissage;
     public Map<String, Evaluation> evaluations = new HashMap<>(); // UUID, Evaluation
 

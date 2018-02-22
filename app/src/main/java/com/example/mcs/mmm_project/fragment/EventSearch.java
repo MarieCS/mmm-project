@@ -1,11 +1,13 @@
 package com.example.mcs.mmm_project.fragment;
 
+import android.accounts.Account;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.mcs.mmm_project.R;
@@ -13,10 +15,16 @@ import com.example.mcs.mmm_project.adapter.SQLDatabaseHelper;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
+import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,9 +35,9 @@ import butterknife.ButterKnife;
 
 public class EventSearch extends Fragment {
 
-    @BindView(R.id.lieu) TextView lieu;
-    @BindView(R.id.theme) TextView theme;
-    @BindView(R.id.mot_clef) TextView mot_clef;
+    @BindView(R.id.lieu) EditText lieu;
+    @BindView(R.id.theme) EditText theme;
+    @BindView(R.id.mot_clef) EditText mot_clef;
     @BindView(R.id.submit) Button submit;
     SQLDatabaseHelper sqlDatabaseHelper;
 
@@ -56,18 +64,42 @@ public class EventSearch extends Fragment {
     }
 
     private void search(){
-//        try {
-//            System.out.println("toto>"+sqlDatabaseHelper.getEventPojoDao().queryForAll().size()+"");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-        if(mot_clef.getText() != null && mot_clef.getText() != ""){
-//            mDatabase.value
-//            if(issue.child("fields").child("ville").exists()
-//                    && issue.child("fields").child("ville").getValue().equals(city)){
-//
-//            }
+    try {
+        QueryBuilder<Event, ?> queryBuilder = sqlDatabaseHelper.getDao(Event.class).queryBuilder();
+        Where<Event, ?> where = queryBuilder.where();
+        int nbWhereArgs = 0;
+        SelectArg selectArg = new SelectArg();
+        // define our query as 'name = ?'
+//                where.eq("name", selectArg);
+
+        if(lieu.getText() != null && !lieu.getText().toString().equals("")){
+            where.like("ville", lieu.getText());
+            nbWhereArgs++;
         }
-//        mDatabase.orderByKey().limitToFirst(50);
+        if(theme.getText() != null && !theme.getText().toString().equals("")){
+            where.like("thematiques", theme.getText());
+            nbWhereArgs++;
+        }
+        if(mot_clef.getText() != null && !mot_clef.getText().toString().equals("")){
+            where.like("titre_fr", mot_clef.getText());
+            nbWhereArgs++;
+        }
+
+        System.out.println(nbWhereArgs);
+
+        if(nbWhereArgs > 0){
+            where.and(nbWhereArgs);
+            // prepare it so it is ready for later query or iterator calls
+            PreparedQuery<Event> preparedQuery = queryBuilder.prepare();
+
+            List<Event> events = sqlDatabaseHelper.getDao(Event.class).query(preparedQuery);
+
+            System.out.println(events.size());
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
     }
 }
