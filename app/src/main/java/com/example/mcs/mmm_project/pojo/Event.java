@@ -2,15 +2,21 @@ package com.example.mcs.mmm_project.pojo;
 
 import com.example.mcs.mmm_project.helper.DateHelper;
 import com.example.mcs.mmm_project.helper.StringHelper;
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -57,7 +63,13 @@ public class Event implements Serializable {
 //    public String description_longue_html_fr;
     @DatabaseField
     public String detail_des_conditions_fr;
-    public Object geolocalisation;
+
+    @DatabaseField
+    public Double longPos;
+    @DatabaseField
+    public Double latPos;
+
+
     @DatabaseField
     public String horaires_detailles_fr;
     @DatabaseField
@@ -152,8 +164,7 @@ public class Event implements Serializable {
 
     public EventPosition getGeolocalisation() {
         try {
-            ArrayList<Double> pos = (ArrayList<Double>) geolocalisation;
-            return new EventPosition(pos.get(0), pos.get(1), this);
+            return new EventPosition(longPos, latPos, this);
         }
         catch (Exception e) {
             Logger.getGlobal().warning(e.toString());

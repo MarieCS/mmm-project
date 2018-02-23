@@ -19,16 +19,12 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 
-/**
- * Created by nicolas on 23/01/18.
- */
-
 public class SQLDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private Context context;
     private Dao<Event, String> eventDAO;
     private static final String DB_NAME = "event_database";
-    private static final int VERSION = 8;
+    private static final int VERSION = 14;
     private DatabaseReference mDatabase;
 
     public SQLDatabaseHelper(Context context) {
@@ -81,6 +77,8 @@ public class SQLDatabaseHelper extends OrmLiteSqliteOpenHelper {
                         Double lon = (Double) coordinates.child("0").getValue();
                         Double lat = (Double) coordinates.child("1").getValue();
                         Event event = dataSnapshot.child("properties").getValue(Event.class);
+                        event.longPos = lon;
+                        event.latPos = lat;
                         try {
                             getEventPojoDao().create(event);
                         } catch (SQLException e) {

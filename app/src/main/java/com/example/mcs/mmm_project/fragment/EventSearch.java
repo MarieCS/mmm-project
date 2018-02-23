@@ -41,6 +41,12 @@ public class EventSearch extends Fragment {
     @BindView(R.id.submit) Button submit;
     SQLDatabaseHelper sqlDatabaseHelper;
 
+    OnSearchEnd listener;
+
+    public void setListener(OnSearchEnd listener){
+        this.listener = listener;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.event_search, container, false);
@@ -64,42 +70,43 @@ public class EventSearch extends Fragment {
     }
 
     private void search(){
-    try {
-        QueryBuilder<Event, ?> queryBuilder = sqlDatabaseHelper.getDao(Event.class).queryBuilder();
-        Where<Event, ?> where = queryBuilder.where();
-        int nbWhereArgs = 0;
-        SelectArg selectArg = new SelectArg();
-        // define our query as 'name = ?'
-//                where.eq("name", selectArg);
+        try {
+            QueryBuilder<Event, ?> queryBuilder = sqlDatabaseHelper.getDao(Event.class).queryBuilder();
+            Where<Event, ?> where = queryBuilder.where();
+            int nbWhereArgs = 0;
+            SelectArg selectArg = new SelectArg();
+            // define our query as 'name = ?'
+    //                where.eq("name", selectArg);
 
-        if(lieu.getText() != null && !lieu.getText().toString().equals("")){
-            where.like("ville", lieu.getText());
-            nbWhereArgs++;
+            if(lieu.getText() != null && !lieu.getText().toString().equals("")){
+                where.like("ville", lieu.getText());
+                nbWhereArgs++;
+            }
+            if(theme.getText() != null && !theme.getText().toString().equals("")){
+                where.like("thematiques", theme.getText());
+                nbWhereArgs++;
+            }
+            if(mot_clef.getText() != null && !mot_clef.getText().toString().equals("")){
+                where.like("titre_fr", mot_clef.getText());
+                nbWhereArgs++;
+            }
+
+
+            if(nbWhereArgs > 0){
+                where.and(nbWhereArgs);
+                // prepare it so it is ready for later query or iterator calls
+                PreparedQuery<Event> preparedQuery = queryBuilder.prepare();
+
+                List<Event> events = sqlDatabaseHelper.getDao(Event.class).query(preparedQuery);
+
+                System.out.println("nb res >" + events.size());
+                if(listener != null){
+                    listener.onSearchEnd(events);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        if(theme.getText() != null && !theme.getText().toString().equals("")){
-            where.like("thematiques", theme.getText());
-            nbWhereArgs++;
-        }
-        if(mot_clef.getText() != null && !mot_clef.getText().toString().equals("")){
-            where.like("titre_fr", mot_clef.getText());
-            nbWhereArgs++;
-        }
-
-        System.out.println(nbWhereArgs);
-
-        if(nbWhereArgs > 0){
-            where.and(nbWhereArgs);
-            // prepare it so it is ready for later query or iterator calls
-            PreparedQuery<Event> preparedQuery = queryBuilder.prepare();
-
-            List<Event> events = sqlDatabaseHelper.getDao(Event.class).query(preparedQuery);
-
-            System.out.println(events.size());
-        }
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-
     }
 }

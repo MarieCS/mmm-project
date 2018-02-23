@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.mcs.mmm_project.R;
 import com.example.mcs.mmm_project.adapter.RecyclerViewAdapter;
 import com.example.mcs.mmm_project.pojo.Event;
@@ -33,44 +35,53 @@ public class EventListFragment extends Fragment implements View.OnClickListener 
 
     @BindView(R.id.recyclerView) public RecyclerView recyclerView;
 
+    public void update(List<Event> events){
+        if(events == null){
+            this.events.clear();
+        }else{
+            this.events = events;
+            recyclerView.setAdapter(new RecyclerViewAdapter(events));
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.event_list_fragment, container, false);
         ButterKnife.bind(this, view);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("features");
-        Query query = mDatabase.limitToFirst(50);
-
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Event event = dataSnapshot.child("properties").getValue(Event.class);
-                event.setFirebaseIndex(dataSnapshot.getKey());
-                events.add(event);
-                recyclerView.setAdapter(new RecyclerViewAdapter(events));
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        mDatabase = FirebaseDatabase.getInstance().getReference("features");
+//        Query query = mDatabase.limitToFirst(50);
+//
+//        query.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Event event = dataSnapshot.child("properties").getValue(Event.class);
+//                event.setFirebaseIndex(dataSnapshot.getKey());
+//                events.add(event);
+//                recyclerView.setAdapter(new RecyclerViewAdapter(events));
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
