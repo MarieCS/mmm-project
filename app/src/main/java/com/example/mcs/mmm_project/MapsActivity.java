@@ -1,10 +1,16 @@
 package com.example.mcs.mmm_project;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.mcs.mmm_project.pojo.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,17 +29,57 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import com.example.mcs.mmm_project.pojo.EventPosition;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ClusterManager.OnClusterItemInfoWindowClickListener<EventPosition> {
 
     private GoogleMap mMap;
     private DatabaseReference mDatabase;
     private ClusterManager<EventPosition> mClusterManager;
     private EventPosition clickedClusterItem;
+    @BindView(R.id.drawer_layout) public DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view) public NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        ButterKnife.bind(this);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setActionBar(myToolbar);
+        ActionBar actionbar = getActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        System.out.println("Oh hi Mark");
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_map:
+                                return true;
+                            case R.id.menu_eventList:
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                return true;
+                            case R.id.menu_parcours:
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }
+                }
+        );
 
         mDatabase = FirebaseDatabase.getInstance().getReference("features");
 
@@ -43,6 +89,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * Manipulates the map once available.

@@ -27,7 +27,7 @@ public class Parcours {
     }
 
     public void addEvent(Event event){
-        eventList.add(event);
+        if(!eventList.contains(event)) eventList.add(event);
     }
 
     public void removeEvent(Event event){

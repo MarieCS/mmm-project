@@ -127,6 +127,7 @@
     <orderEntry type="library" scope="TEST" name="com.squareup:javawriter:2.1.1@jar" level="project" />
     <orderEntry type="library" name="com.android.support:support-v4-26.0.0-alpha1" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-basement-11.0.4" level="project" />
+    <orderEntry type="library" name="com.android.support:design-26.0.0-alpha1" level="project" />
     <orderEntry type="library" name="com.android.support:support-compat-26.0.0-alpha1" level="project" />
     <orderEntry type="library" name="com.android.support:support-core-utils-26.0.0-alpha1" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-iid-11.0.4" level="project" />
@@ -149,6 +150,7 @@
     <orderEntry type="library" name="com.android.support:support-core-ui-26.0.0-alpha1" level="project" />
     <orderEntry type="library" scope="TEST" name="com.android.support.test:runner-0.5" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-maps-11.0.4" level="project" />
+    <orderEntry type="library" name="com.android.support:transition-26.0.0-alpha1" level="project" />
     <orderEntry type="library" name="com.j256.ormlite:ormlite-android:5.0@jar" level="project" />
     <orderEntry type="library" name="com.j256.ormlite:ormlite-core:5.0@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="com.android.support.test.espresso:espresso-idling-resource-2.2.2" level="project" />
