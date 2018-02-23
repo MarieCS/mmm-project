@@ -1,4 +1,4 @@
-package com.example.mcs.mmm_project.adapter;
+package com.example.mcs.mmm_project.adapter.holder;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -9,14 +9,13 @@ import com.example.mcs.mmm_project.EventActivity;
 import com.example.mcs.mmm_project.R;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.squareup.picasso.Picasso;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Une case (CardView) de la liste (RecyclerView)
  */
-public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+public class RecyclerViewHolder_EventList extends RecyclerView.ViewHolder  {
 
     @BindView(R.id.text) public TextView textView;
     @BindView(R.id.image) public ImageView imageView;
@@ -24,7 +23,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     public View view;
     private Event event;
 
-    public RecyclerViewHolder(View view) {
+    public RecyclerViewHolder_EventList(View view) {
         super(view);
         this.view = view;
         view.setOnClickListener(new View.OnClickListener() {

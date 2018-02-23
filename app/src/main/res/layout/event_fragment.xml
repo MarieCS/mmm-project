@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TabWidget
@@ -119,14 +119,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Ajouter au parcours"/>
+                            android:text="Ajouter au parcours" />
 
                         <Button
                             android:id="@+id/enleverDuParcours"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Enlever du parcours"  />
+                            android:text="Enlever du parcours" />
 
                         <TextView
                             android:id="@+id/textView"
@@ -195,56 +195,99 @@
                 android:id="@+id/event_tab2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/event_user_ratingLabel"
+                <ScrollView
+
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Evaluer cet événement"
-                    android:textSize="18sp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
-                    <RatingBar
-                        android:id="@+id/event_user_ratingBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:max="5"
-                        android:min="0"
-                        android:numStars="5"
-                        android:rating="0"
-                        android:stepSize="1" />
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/event_users_ratingLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="X utilisateurs ont évalués cet événement"
+                            android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/event_users_ratingLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="X utilisateurs ont évalués cet événement"
-                    android:textSize="18sp" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                            <RatingBar
+                                android:id="@+id/event_users_RatingBar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:isIndicator="true"
+                                android:max="5"
+                                android:maxHeight="42dp"
+                                android:min="0"
+                                android:minHeight="42dp"
+                                android:numStars="5"
+                                android:rating="0"
+                                android:scaleX="0.7"
+                                android:scaleY="0.7" />
+                        </RelativeLayout>
 
-                    <RatingBar
-                        android:id="@+id/event_users_RatingBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:isIndicator="true"
-                        android:max="5"
-                        android:min="0"
-                        android:numStars="5"
-                        android:rating="0" />
-                </RelativeLayout>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/event_users_RecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/event_user_ratingLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Evaluer cet événement"
+                            android:textSize="18sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RatingBar
+                                android:id="@+id/event_user_ratingBar"
+                                style="@android:style/Widget.DeviceDefault.RatingBar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:max="5"
+                                android:maxHeight="42dp"
+                                android:min="0"
+                                android:minHeight="42dp"
+                                android:numStars="5"
+                                android:rating="0"
+                                android:scaleX="0.7"
+                                android:scaleY="0.7"
+                                android:stepSize="1" />
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/event_user_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Votre commentaire"
+                            android:inputType="textMultiLine" />
+
+                        <Button
+                            android:id="@+id/event_user_btnSendEval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Envoyer votre commentaire" />
+
+                    </LinearLayout>
+                </ScrollView>
 
             </LinearLayout>
 

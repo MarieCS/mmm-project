@@ -41,8 +41,8 @@ public class IntentHelper {
         Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        share.putExtra(Intent.EXTRA_SUBJECT,  event.titre_fr);
-        share.putExtra(Intent.EXTRA_TEXT, event.description_fr);
+        share.putExtra(Intent.EXTRA_SUBJECT, event.titre_fr);
+        share.putExtra(Intent.EXTRA_TEXT, event.site_web_du_lieu);
         activity.startActivity(Intent.createChooser(share, "Share"));
     }
 }

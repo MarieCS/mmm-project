@@ -4,10 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -21,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import com.example.mcs.mmm_project.R;
+import com.example.mcs.mmm_project.adapter.RecyclerViewAdapter_EvaluationList;
 import com.example.mcs.mmm_project.helper.DateHelper;
 import com.example.mcs.mmm_project.helper.FirebaseHelper;
 import com.example.mcs.mmm_project.helper.IntentHelper;
@@ -34,8 +38,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class EventFragment extends Fragment implements OnMapReadyCallback {
@@ -58,6 +66,9 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.event_user_ratingBar) RatingBar event_user_ratingBar;
     @BindView(R.id.event_users_ratingLabel) TextView event_users_ratingLabel;
     @BindView(R.id.event_users_RatingBar) RatingBar event_users_RatingBar;
+    @BindView(R.id.event_users_RecyclerView) RecyclerView event_users_RecyclerView;
+    @BindView(R.id.event_user_btnSendEval) Button event_user_btnSendEval;
+    @BindView(R.id.event_user_comment) EditText event_user_comment;
 
     private static final String ARG_EVENT = "event";
     private Event event;
@@ -65,6 +76,7 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
     private Integer tauxRemplissageInitial;
     private Integer tauxRemplissageCourant;
+    private ArrayList<Evaluation> usersEvaluations = new ArrayList<>();
 
     public EventFragment() {
         // Required empty public constructor
@@ -152,6 +164,8 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
             infos.setText(strbInfos);
             updateLabelTauxRemplissage();
 
+
+
             //////////// BOUTONS
             ajoutAuParcours.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -208,17 +222,99 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
                 }
             });
 
+
             //////////////// MENU EVALUATION
             updateRatingBars();
 
             event_user_ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                    event.addUserEvaluation(new Evaluation(rating));
+                    event.getUserEvaluation().rating = rating;
                     FirebaseHelper.update(event);
                     updateRatingBars();
                 }
             });
+
+            FirebaseHelper.getEvaluations(event, new ChildEventListener() {
+                private int getRecyclerViewIndex(Evaluation eval) {
+                    int i = 0;
+                    int index = -1;
+                    while (i < usersEvaluations.size() && index == -1) {
+                        if (usersEvaluations.get(i).equals(eval)) {
+                            index = i;
+                        }
+                        i++;
+                    }
+                    return index;
+                }
+
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Evaluation eval = dataSnapshot.getValue(Evaluation.class);
+                    eval.uuidKey = dataSnapshot.getKey();
+                    event.evaluations.put(eval.uuidKey, eval);
+                    if (!eval.isEmpty()) {
+                        usersEvaluations.add(eval);
+                        event_users_RecyclerView.setAdapter(new RecyclerViewAdapter_EvaluationList(usersEvaluations));
+                    }
+                    updateRatingBars();
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Evaluation newEval = dataSnapshot.getValue(Evaluation.class);
+                    newEval.uuidKey = dataSnapshot.getKey();
+                    event.evaluations.put(newEval.uuidKey, newEval);
+
+                    int index = getRecyclerViewIndex(newEval);
+                    if (index != -1) {
+                        usersEvaluations.remove(index);
+                    }
+                    else {
+                        index = 0;
+                    }
+
+                    if (!newEval.isEmpty()) {
+                        usersEvaluations.add(index, newEval);
+                    }
+
+                    event_users_RecyclerView.setAdapter(new RecyclerViewAdapter_EvaluationList(usersEvaluations));
+                    updateRatingBars();
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    Evaluation eval = dataSnapshot.getValue(Evaluation.class);
+                    eval.uuidKey = dataSnapshot.getKey();
+                    event.evaluations.remove(eval.uuidKey);
+                    usersEvaluations.remove(getRecyclerViewIndex(eval));
+                    event_users_RecyclerView.setAdapter(new RecyclerViewAdapter_EvaluationList(usersEvaluations));
+                    updateRatingBars();
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            event_users_RecyclerView.setLayoutManager(llm);
+
+            event_user_btnSendEval.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    event.getUserEvaluation().comment = event_user_comment.getText().toString();
+                    FirebaseHelper.update(event);
+                }
+            });
+
 
             //////////////// MENU ORGANISATION
             event_seekbar_label_remplissage.setText(event.taux_remplissage + "%");
@@ -272,15 +368,16 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         EventPosition pos = event.getGeolocalisation();
 
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(pos.getPosition(), 20));
         map.addMarker(new MarkerOptions()
                 .position(pos.getPosition())
-                .title(event.titre_fr));
-
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(pos.getPosition(), 14));
-        map.getUiSettings().setZoomControlsEnabled(true);
+                .title(event.titre_fr)
+                .snippet(event.adresse + " " + event.code_postal + " " + event.ville));
     }
 
     @Override
@@ -292,31 +389,35 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     private Button addInfosButton(String text) {
         Button button = new Button(getActivity());
         button.setText(text);
-        event_infos_buttons.addView(button, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        button.setTextSize(10);
+        event_infos_buttons.addView(button, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         return button;
     }
 
     private void updateRatingBars() {
+        //// USER
         Evaluation userEval = event.evaluations.get(StringHelper.getUniqueID());
         if (userEval == null || userEval.rating == 0) {
-            event_user_ratingLabel.setText("Vous n'avez pas évalué cet événement");
+            event_user_ratingLabel.setText("Vous n'avez pas noté cet événement");
             event_user_ratingBar.setRating(0);
         }
         else {
             event_user_ratingLabel.setText("Vous avez noté cet événement à " + (userEval.rating + "").substring(0,1) + "/" + event_user_ratingBar.getNumStars() + " étoiles");
             event_user_ratingBar.setRating(userEval.rating);
         }
+        event_user_comment.setText(event.getUserEvaluation().comment);
 
+        //// USERS
         String lblUsersEvaluations;
         float avg = event.getEvaluationAvg();
         if (event.getEvaluationStarCount() == 0) {
-            lblUsersEvaluations = "Aucun utilisateur a évalué cet événement";
+            lblUsersEvaluations = "Aucun utilisateur a noté cet événement";
         }
         else if (event.getEvaluationStarCount() == 1) {
-            lblUsersEvaluations = event.getEvaluationStarCount() + " utilisateur a évalué cet événement (" + (avg+"00").substring(0,3) + "/" + event_users_RatingBar.getNumStars() + ")";
+            lblUsersEvaluations = event.getEvaluationStarCount() + " utilisateur a noté cet événement (" + (avg+"00").substring(0,3) + "/" + event_users_RatingBar.getNumStars() + ")";
         }
         else {
-            lblUsersEvaluations = event.getEvaluationStarCount() + " utilisateurs ont évalués cet événement (" + (avg+"00").substring(0,3) + "/" + event_users_RatingBar.getNumStars() + ")";
+            lblUsersEvaluations = event.getEvaluationStarCount() + " utilisateurs ont notés cet événement (" + (avg+"00").substring(0,3) + "/" + event_users_RatingBar.getNumStars() + ")";
         }
         event_users_ratingLabel.setText(lblUsersEvaluations);
         event_users_RatingBar.setRating(avg);

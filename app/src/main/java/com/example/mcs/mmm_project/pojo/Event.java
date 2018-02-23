@@ -23,7 +23,8 @@ import java.util.logging.Logger;
 
 
 public class Event implements Serializable {
-    private String firebaseIndex;
+    @DatabaseField
+    public String firebaseIndex;
 
     @DatabaseField
     public String adresse;
@@ -145,14 +146,6 @@ public class Event implements Serializable {
 
     public Event() { }
 
-    public String getFirebaseIndex() {
-        return firebaseIndex;
-    }
-
-    public void setFirebaseIndex(String firebaseIndex) {
-        this.firebaseIndex = firebaseIndex;
-    }
-
     public Collection<Evaluation> getEvaluations() {
         return evaluations.values();
     }
@@ -183,7 +176,7 @@ public class Event implements Serializable {
     public float getEvaluationAvg() {
         float avg = 0;
         int count = 0;
-        for (Evaluation e: getEvaluations()) {
+        for (Evaluation e: evaluations.values()) {
             if (e.rating != 0) {
                 avg += e.rating;
                 count++;
@@ -198,7 +191,7 @@ public class Event implements Serializable {
 
     public int getEvaluationStarCount() {
         int count = 0;
-        for (Evaluation e: getEvaluations()) {
+        for (Evaluation e: evaluations.values()) {
             if (e.rating != 0) {
                 count++;
             }
@@ -206,7 +199,13 @@ public class Event implements Serializable {
         return count;
     }
 
-    public void addUserEvaluation(Evaluation evaluation) {
-        evaluations.put(StringHelper.getUniqueID(), evaluation);
+    public Evaluation getUserEvaluation() {
+        Evaluation eval = evaluations.get(StringHelper.getUniqueID());
+        if (eval == null) {
+            eval = new Evaluation();
+            eval.uuidKey = StringHelper.getUniqueID();
+            evaluations.put(StringHelper.getUniqueID(), eval);
+        }
+        return eval;
     }
 }

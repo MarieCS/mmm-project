@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mcs.mmm_project.R;
-import com.example.mcs.mmm_project.adapter.RecyclerViewAdapter;
+import com.example.mcs.mmm_project.adapter.RecyclerViewAdapter_EventList;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.example.mcs.mmm_project.pojo.EventPosition;
 import com.google.firebase.database.ChildEventListener;
@@ -40,7 +40,7 @@ public class EventListFragment extends Fragment implements View.OnClickListener 
             this.events.clear();
         }else{
             this.events = events;
-            recyclerView.setAdapter(new RecyclerViewAdapter(events));
+            recyclerView.setAdapter(new RecyclerViewAdapter_EventList(events));
         }
     }
 

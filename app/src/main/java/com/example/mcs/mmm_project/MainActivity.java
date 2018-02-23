@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    private static Context context;
+    public static Context context;
 
     SQLDatabaseHelper sqlDatabaseHelper;
     @BindView(R.id.drawer_layout) public DrawerLayout mDrawerLayout;

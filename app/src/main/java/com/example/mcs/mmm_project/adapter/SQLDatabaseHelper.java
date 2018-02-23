@@ -79,6 +79,7 @@ public class SQLDatabaseHelper extends OrmLiteSqliteOpenHelper {
                         Event event = dataSnapshot.child("properties").getValue(Event.class);
                         event.longPos = lon;
                         event.latPos = lat;
+                        event.firebaseIndex = dataSnapshot.getKey();
                         try {
                             getEventPojoDao().create(event);
                         } catch (SQLException e) {

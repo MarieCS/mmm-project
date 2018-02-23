@@ -23,6 +23,7 @@ public class SearchActivity extends Activity implements OnSearchEnd {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MainActivity.context = getApplicationContext();
         setContentView(R.layout.activity_search);
         //((ArticleListFragment)(getFragmentManager().findFragmentById(R.id.list))).setListener(this);
         getFragmentManager().findFragmentById(R.id.fragment_container);
