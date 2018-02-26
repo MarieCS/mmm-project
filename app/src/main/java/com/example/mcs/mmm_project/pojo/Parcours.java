@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Parcours {
 
-    private List<Event> eventList;
+    private ArrayList<Event> eventList;
 
     private static Parcours parcours;
 
@@ -22,7 +22,7 @@ public class Parcours {
         return parcours;
     }
 
-    public List<Event> getParcours(){
+    public ArrayList<Event> getParcours(){
         return eventList;
     }
 
@@ -33,5 +33,6 @@ public class Parcours {
     public void removeEvent(Event event){
         if(event != null && eventList.contains(event)) eventList.remove(event);
     }
+
 
 }

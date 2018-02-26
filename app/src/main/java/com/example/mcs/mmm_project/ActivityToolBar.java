@@ -80,6 +80,8 @@ public class ActivityToolBar {
                                 activity.startActivity(intent);
                                 return true;
                             case R.id.menu_parcours:
+                                Intent intentRoute = new Intent(activity.getApplicationContext(), RouteActivity.class);
+                                activity.startActivity(intentRoute);
                                 return true;
                             default:
                                 return true;
