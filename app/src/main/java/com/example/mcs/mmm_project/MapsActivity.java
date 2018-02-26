@@ -47,39 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setActionBar(myToolbar);
-        ActionBar actionbar = getActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-        navigationView.getMenu().getItem(0).setChecked(true);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        System.out.println("Oh hi Mark");
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        switch (menuItem.getItemId()) {
-                            case R.id.menu_map:
-                                return true;
-                            case R.id.menu_eventList:
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-                                return true;
-                            case R.id.menu_parcours:
-                                return true;
-                            default:
-                                return true;
-                        }
-                    }
-                }
-        );
+        ActivityToolBar.createToolBar(this, navigationView, mDrawerLayout);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("features");
 
