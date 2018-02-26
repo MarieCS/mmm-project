@@ -75,20 +75,18 @@ public class EventSearch extends Fragment {
             Where<Event, ?> where = queryBuilder.where();
             int nbWhereArgs = 0;
             SelectArg selectArg = new SelectArg();
-            // define our query as 'name = ?'
-    //                where.eq("name", selectArg);
 
             if(lieu.getText() != null && !lieu.getText().toString().trim().equals("")){
                 where.like("ville", lieu.getText().toString().trim());
                 nbWhereArgs++;
             }
             if(theme.getText() != null && !theme.getText().toString().equals("")){
-                where.like("thematiques", theme.getText());
+                where.like("thematiques", "%"+theme.getText()+"%");
                 nbWhereArgs++;
             }
             if(mot_clef.getText() != null && !mot_clef.getText().toString().equals("")){
-                where.like("titre_fr", mot_clef.getText());
                 nbWhereArgs++;
+                where.like("titre_fr", "%"+mot_clef.getText()+"%");
             }
 
 
