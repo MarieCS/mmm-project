@@ -54,7 +54,6 @@ public class ActivityToolBar {
     }
 
     public static void createToolBar(FragmentActivity activity, NavigationView navigationView, DrawerLayout mDrawerLayout){
-        ActivityToolBar.createToolBar(activity, navigationView, mDrawerLayout);
         android.widget.Toolbar myToolbar = (android.widget.Toolbar) activity.findViewById(R.id.toolbar);
         activity.setActionBar(myToolbar);
         android.app.ActionBar actionbar = activity.getActionBar();

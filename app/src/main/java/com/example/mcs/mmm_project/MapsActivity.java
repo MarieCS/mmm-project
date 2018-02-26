@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.example.mcs.mmm_project.adapter.SQLDatabaseHelper;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +29,13 @@ import com.google.firebase.database.Query;
 import com.google.maps.android.clustering.ClusterManager;
 
 import com.example.mcs.mmm_project.pojo.EventPosition;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
+import com.j256.ormlite.stmt.Where;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private EventPosition clickedClusterItem;
     @BindView(R.id.drawer_layout) public DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_view) public NavigationView navigationView;
+    SQLDatabaseHelper sqlDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ActivityToolBar.createToolBar(this, navigationView, mDrawerLayout);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("features");
+        sqlDatabaseHelper = new SQLDatabaseHelper(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -85,37 +95,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
         mMap.setOnInfoWindowClickListener(mClusterManager);
 
-        Query query = mDatabase.orderByKey();
+        QueryBuilder<Event, ?> queryBuilder = null;
+        try {
+            queryBuilder = sqlDatabaseHelper.getDao(Event.class).queryBuilder();
 
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                DataSnapshot coordinates = dataSnapshot.child("geometry").child("coordinates");
-                if(coordinates.getValue() != null){
-                    Double lon = (Double) coordinates.child("0").getValue();
-                    Double lat = (Double) coordinates.child("1").getValue();
+            /*Where<Event, ?> where = queryBuilder.where();
+            int nbWhereArgs = 0;
+            SelectArg selectArg = new SelectArg();
+            // define our query as 'name = ?'
+            //                where.eq("name", selectArg);
 
-                    Event event = dataSnapshot.child("properties").getValue(Event.class);
-
-                    EventPosition eventPosition = new EventPosition(lat, lon, event);
-
-                    mClusterManager.addItem(eventPosition);
-                    mClusterManager.cluster();
-                }
+            if(lieu.getText() != null && !lieu.getText().toString().trim().equals("")){
+                where.like("ville", lieu.getText().toString().trim());
+                nbWhereArgs++;
             }
+            if(theme.getText() != null && !theme.getText().toString().equals("")){
+                where.like("thematiques", theme.getText());
+                nbWhereArgs++;
+            }
+            if(mot_clef.getText() != null && !mot_clef.getText().toString().equals("")){
+                where.like("titre_fr", mot_clef.getText());
+                nbWhereArgs++;
+            }*/
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+            //if(nbWhereArgs > 0){
+                //where.and(nbWhereArgs);
+                // prepare it so it is ready for later query or iterator calls
+                PreparedQuery<Event> preparedQuery = queryBuilder.prepare();
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+                List<Event> events = sqlDatabaseHelper.getDao(Event.class).query(preparedQuery);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        });
+                events.forEach(e -> {
+                    mClusterManager.addItem(new EventPosition(e.latPos, e.longPos, e));
+                });
+
+                mClusterManager.cluster();
+                
+                //System.out.println("nb res >" + events.size());
+                /*if(listener != null){
+                    listener.onSearchEnd(events);
+                }*/
+            //}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
