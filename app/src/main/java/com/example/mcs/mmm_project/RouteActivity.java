@@ -11,7 +11,10 @@ import android.widget.Button;
 
 import com.example.mcs.mmm_project.fragment.EventFragment;
 import com.example.mcs.mmm_project.fragment.EventListFragment;
+import com.example.mcs.mmm_project.pojo.Event;
 import com.example.mcs.mmm_project.pojo.Parcours;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +22,7 @@ import butterknife.ButterKnife;
 public class RouteActivity extends FragmentActivity {
     private EventListFragment listfragment;
 
-    @BindView(R.id.showOnMap) public Button showOnMap;
+    @BindView(R.id.btnShowOnMap) public Button btnShowOnMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +35,9 @@ public class RouteActivity extends FragmentActivity {
                 return;
             }
 
-            listfragment = new EventListFragment();
-            listfragment.setArguments(getIntent().getExtras());
-            listfragment.setRouteActivityObserver(this);
-
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.fragment_container, listfragment);
-            ft.commit();
-
-            showOnMap.setOnClickListener(new View.OnClickListener() {
+            btnShowOnMap.setText("Chargement...");
+            btnShowOnMap.setEnabled(false);
+            btnShowOnMap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onShowOnMapClick();
@@ -56,7 +52,29 @@ public class RouteActivity extends FragmentActivity {
         startActivity(i);
     }
 
+    @Override
+    protected void onResume() { // On recharge les événements du parcours
+        super.onResume();
+        listfragment = new EventListFragment();
+        listfragment.setArguments(getIntent().getExtras());
+        listfragment.setRouteActivityObserver(this);
+
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.fragment_container, listfragment);
+        ft.commit();
+    }
+
     public void onRecyclerEventListLoaded() {
-        listfragment.update(Parcours.getInstance().getParcours());
+        ArrayList<Event> list = Parcours.getInstance().getParcours();
+        if (list.size() == 0) {
+            btnShowOnMap.setText("Aucun événement n'a été ajouté au parcours");
+            btnShowOnMap.setEnabled(false);
+        }
+        else {
+            btnShowOnMap.setText("Afficher sur la carte");
+            btnShowOnMap.setEnabled(true);
+        }
+        listfragment.update(list);
     }
 }

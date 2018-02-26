@@ -208,4 +208,15 @@ public class Event implements Serializable {
         }
         return eval;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Event event = (Event) o;
+
+        System.out.println(firebaseIndex + " =?= " +event.firebaseIndex + " > " + firebaseIndex.equals(event.firebaseIndex));
+        return (firebaseIndex.equals(event.firebaseIndex));
+    }
 }

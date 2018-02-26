@@ -54,8 +54,7 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.image) ImageView image;
     @BindView(R.id.mapView) MapView mapView;
     @BindView(R.id.event_tabHost) TabHost tabHost;
-    @BindView(R.id.ajoutAuParcours) Button ajoutAuParcours;
-    @BindView(R.id.enleverDuParcours) Button enleverDuParcours;
+    @BindView(R.id.btnAddRoute) Button btnAddRoute;
     @BindView(R.id.event_infos_buttons) LinearLayout event_infos_buttons;
     @BindView(R.id.event_seekbar_remplissage) SeekBar event_seekbar_remplissage;
     @BindView(R.id.event_seekbar_label_remplissage) TextView event_seekbar_label_remplissage;
@@ -76,6 +75,7 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
     private Integer tauxRemplissageInitial;
     private Integer tauxRemplissageCourant;
+    private Boolean enventInRoute = false;
     private ArrayList<Evaluation> usersEvaluations = new ArrayList<>();
 
     public EventFragment() {
@@ -167,24 +167,30 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
 
 
             //////////// BOUTONS
-            ajoutAuParcours.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Parcours.getInstance().addEvent(event);
-                    Toast.makeText(getContext(), "Evenement ajouté au parcours", Toast.LENGTH_LONG).show();
-                    ajoutAuParcours.setVisibility(View.GONE);
-                    enleverDuParcours.setVisibility(View.VISIBLE);
-                }
-            });
+            if (Parcours.getInstance().getParcours().contains(event)) {
+                enventInRoute = true;
+                btnAddRoute.setText("Retirer du parcours");
 
-            enleverDuParcours.setVisibility(View.GONE);
-            enleverDuParcours.setOnClickListener(new View.OnClickListener() {
+            }
+            else {
+                enventInRoute = false;
+                btnAddRoute.setText("Ajouter au parcours");
+            }
+
+            btnAddRoute.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Parcours.getInstance().removeEvent(event);
-                    Toast.makeText(getContext(), "Evenement enlevé du parcours", Toast.LENGTH_LONG).show();
-                    ajoutAuParcours.setVisibility(View.VISIBLE);
-                    enleverDuParcours.setVisibility(View.GONE);
+                    enventInRoute = !enventInRoute;
+                    if (enventInRoute) {
+                        Parcours.getInstance().addEvent(event);
+                        Toast.makeText(getContext(), "Evenement ajouté au parcours", Toast.LENGTH_LONG).show();
+                        btnAddRoute.setText("Retirer du parcours");
+                    }
+                    else {
+                        Parcours.getInstance().removeEvent(event);
+                        Toast.makeText(getContext(), "Evenement retiré du parcours", Toast.LENGTH_LONG).show();
+                        btnAddRoute.setText("Ajouter au parcours");
+                    }
                 }
             });
 

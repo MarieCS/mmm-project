@@ -27,7 +27,6 @@ public class ActivityToolBar {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        System.out.println("Oh hi Mark");
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
@@ -44,6 +43,8 @@ public class ActivityToolBar {
                                 activity.startActivity(intentSearch);
                                 return true;
                             case R.id.menu_parcours:
+                                Intent intentParcours = new Intent(activity.getApplicationContext(), RouteActivity.class);
+                                activity.startActivity(intentParcours);
                                 return true;
                             default:
                                 return true;
@@ -65,7 +66,6 @@ public class ActivityToolBar {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        System.out.println("Oh hi Mark");
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped

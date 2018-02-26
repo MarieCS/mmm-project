@@ -115,18 +115,11 @@
                         </TableLayout>
 
                         <Button
-                            android:id="@+id/ajoutAuParcours"
+                            android:id="@+id/btnAddRoute"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Ajouter au parcours" />
-
-                        <Button
-                            android:id="@+id/enleverDuParcours"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Enlever du parcours" />
 
                         <TextView
                             android:id="@+id/textView"
