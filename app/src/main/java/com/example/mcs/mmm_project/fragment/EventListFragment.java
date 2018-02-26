@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mcs.mmm_project.R;
+import com.example.mcs.mmm_project.RouteActivity;
 import com.example.mcs.mmm_project.adapter.RecyclerViewAdapter_EventList;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.example.mcs.mmm_project.pojo.EventPosition;
+import com.example.mcs.mmm_project.pojo.Parcours;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +34,7 @@ public class EventListFragment extends Fragment implements View.OnClickListener 
 
     private DatabaseReference mDatabase;
     private List<Event> events = new ArrayList<>();
+    private RouteActivity routeActivityObserver = null;
 
     @BindView(R.id.recyclerView) public RecyclerView recyclerView;
 
@@ -50,42 +53,13 @@ public class EventListFragment extends Fragment implements View.OnClickListener 
         View view = inflater.inflate(R.layout.event_list_fragment, container, false);
         ButterKnife.bind(this, view);
 
-//        mDatabase = FirebaseDatabase.getInstance().getReference("features");
-//        Query query = mDatabase.limitToFirst(50);
-//
-//        query.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Event event = dataSnapshot.child("properties").getValue(Event.class);
-//                event.setFirebaseIndex(dataSnapshot.getKey());
-//                events.add(event);
-//                recyclerView.setAdapter(new RecyclerViewAdapter(events));
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
+
+        if (routeActivityObserver != null) {
+            routeActivityObserver.onRecyclerEventListLoaded();
+        }
 
         return view;
     }
@@ -98,5 +72,9 @@ public class EventListFragment extends Fragment implements View.OnClickListener 
 
         ft.add(R.id.fragment, fragment);
         ft.commit();
+    }
+
+    public void setRouteActivityObserver(RouteActivity routeActivityObserver) {
+        this.routeActivityObserver = routeActivityObserver;
     }
 }
