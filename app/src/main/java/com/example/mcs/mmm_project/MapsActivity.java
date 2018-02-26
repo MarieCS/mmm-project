@@ -1,6 +1,5 @@
 package com.example.mcs.mmm_project;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
@@ -10,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.example.mcs.mmm_project.adapter.SQLDatabaseHelper;
 import com.example.mcs.mmm_project.pojo.Event;
@@ -20,19 +18,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.maps.android.clustering.ClusterManager;
 
 import com.example.mcs.mmm_project.pojo.EventPosition;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.SelectArg;
-import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -50,11 +42,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @BindView(R.id.nav_view) public NavigationView navigationView;
     SQLDatabaseHelper sqlDatabaseHelper;
 
+    List<Event> events;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
+
+        if(getIntent().getExtras() != null && !getIntent().getExtras().isEmpty())
+            events = (List<Event>) getIntent().getExtras().get("events");
 
         ActivityToolBar.createToolBar(this, navigationView, mDrawerLayout);
 
@@ -99,44 +96,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         try {
             queryBuilder = sqlDatabaseHelper.getDao(Event.class).queryBuilder();
 
-            /*Where<Event, ?> where = queryBuilder.where();
-            int nbWhereArgs = 0;
-            SelectArg selectArg = new SelectArg();
-            // define our query as 'name = ?'
-            //                where.eq("name", selectArg);
+            // prepare it so it is ready for later query or iterator calls
+            PreparedQuery<Event> preparedQuery = queryBuilder.prepare();
 
-            if(lieu.getText() != null && !lieu.getText().toString().trim().equals("")){
-                where.like("ville", lieu.getText().toString().trim());
-                nbWhereArgs++;
+            if(events == null){
+                events = sqlDatabaseHelper.getDao(Event.class).query(preparedQuery);
             }
-            if(theme.getText() != null && !theme.getText().toString().equals("")){
-                where.like("thematiques", theme.getText());
-                nbWhereArgs++;
-            }
-            if(mot_clef.getText() != null && !mot_clef.getText().toString().equals("")){
-                where.like("titre_fr", mot_clef.getText());
-                nbWhereArgs++;
-            }*/
 
+            events.forEach(e -> {
+                mClusterManager.addItem(new EventPosition(e.latPos, e.longPos, e));
+            });
 
-            //if(nbWhereArgs > 0){
-                //where.and(nbWhereArgs);
-                // prepare it so it is ready for later query or iterator calls
-                PreparedQuery<Event> preparedQuery = queryBuilder.prepare();
+            mClusterManager.cluster();
 
-                List<Event> events = sqlDatabaseHelper.getDao(Event.class).query(preparedQuery);
-
-                events.forEach(e -> {
-                    mClusterManager.addItem(new EventPosition(e.latPos, e.longPos, e));
-                });
-
-                mClusterManager.cluster();
-                
-                //System.out.println("nb res >" + events.size());
-                /*if(listener != null){
-                    listener.onSearchEnd(events);
-                }*/
-            //}
         } catch (SQLException e) {
             e.printStackTrace();
         }
