@@ -1,5 +1,7 @@
 package com.example.mcs.mmm_project.pojo;
 
+import com.example.mcs.mmm_project.helper.FirebaseHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +29,17 @@ public class Parcours {
     }
 
     public void addEvent(Event event){
-        if(!eventList.contains(event)) eventList.add(event);
+        if(!eventList.contains(event)) {
+            eventList.add(event);
+            FirebaseHelper.updateRoute();
+        }
     }
 
     public void removeEvent(Event event){
-        if(event != null && eventList.contains(event)) eventList.remove(event);
+        if(event != null && eventList.contains(event)) {
+            eventList.remove(event);
+            FirebaseHelper.updateRoute();
+        }
     }
-
 
 }
