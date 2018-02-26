@@ -36,39 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        ActivityToolBar.createToolBar(this, navigationView, mDrawerLayout);
 
-        navigationView.getMenu().getItem(1).setChecked(true);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        System.out.println("Oh hi Mark");
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        switch (menuItem.getItemId()) {
-                            case R.id.menu_map:
-                                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                                startActivity(intent);
-                                return true;
-                            case R.id.menu_eventList:
-                                return true;
-                            case R.id.menu_parcours:
-                                return true;
-                            default:
-                                return true;
-                        }
-                    }
-                }
-        );
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

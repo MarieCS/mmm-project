@@ -24,7 +24,7 @@ public class SQLDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Context context;
     private Dao<Event, String> eventDAO;
     private static final String DB_NAME = "event_database";
-    private static final int VERSION = 14;
+    private static final int VERSION = 15;
     private DatabaseReference mDatabase;
 
     public SQLDatabaseHelper(Context context) {
