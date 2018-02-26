@@ -35,7 +35,6 @@ import butterknife.ButterKnife;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, ClusterManager.OnClusterItemInfoWindowClickListener<EventPosition> {
 
     private GoogleMap mMap;
-    private DatabaseReference mDatabase;
     private ClusterManager<EventPosition> mClusterManager;
     private EventPosition clickedClusterItem;
     @BindView(R.id.drawer_layout) public DrawerLayout mDrawerLayout;
@@ -55,7 +54,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         ActivityToolBar.createToolBar(this, navigationView, mDrawerLayout);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("features");
         sqlDatabaseHelper = new SQLDatabaseHelper(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -92,7 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
         mMap.setOnInfoWindowClickListener(mClusterManager);
 
-        QueryBuilder<Event, ?> queryBuilder = null;
+        QueryBuilder<Event, ?> queryBuilder;
         try {
             queryBuilder = sqlDatabaseHelper.getDao(Event.class).queryBuilder();
 
@@ -135,13 +133,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(
                 new AdapterEventPosition());
-
-        /*mClusterManager.setRenderer(new DefaultClusterRenderer<EventPosition>(this, mMap, mClusterManager){
-            @Override
-            protected boolean shouldRenderAsCluster(Cluster<EventPosition> cluster) {
-                return shouldRenderClustering;
-            }
-        });*/
 
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
