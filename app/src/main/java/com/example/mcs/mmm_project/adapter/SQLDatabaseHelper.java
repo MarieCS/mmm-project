@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.mcs.mmm_project.SplashActivity;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -27,9 +28,12 @@ public class SQLDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int VERSION = 15;
     private DatabaseReference mDatabase;
 
+    private int nbEvents;
+
     public SQLDatabaseHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
         this.context = context;
+        this.nbEvents = 0;
         mDatabase = FirebaseDatabase.getInstance().getReference("features");
     }
 
@@ -82,6 +86,7 @@ public class SQLDatabaseHelper extends OrmLiteSqliteOpenHelper {
                         event.firebaseIndex = dataSnapshot.getKey();
                         try {
                             getEventPojoDao().create(event);
+                            nbEvents++;
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -92,5 +97,9 @@ public class SQLDatabaseHelper extends OrmLiteSqliteOpenHelper {
                 @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                 @Override public void onCancelled(DatabaseError databaseError) {}
             });
+    }
+
+    public int getNbEvents() {
+        return nbEvents;
     }
 }
