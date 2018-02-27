@@ -374,8 +374,8 @@ public class EventFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.getUiSettings().setZoomControlsEnabled(true);
-        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        /*map.getUiSettings().setZoomControlsEnabled(true);
+        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);*/
 
         EventPosition pos = event.getGeolocalisation();
 

@@ -4,12 +4,14 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.mcs.mmm_project.fragment.EventFragment;
 import com.example.mcs.mmm_project.fragment.EventListFragment;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.example.mcs.mmm_project.pojo.Parcours;
@@ -23,12 +25,16 @@ public class RouteActivity extends FragmentActivity {
     private EventListFragment listfragment;
 
     @BindView(R.id.btnShowOnMap) public Button btnShowOnMap;
+    @BindView(R.id.drawer_layout) public DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view) public NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
         ButterKnife.bind(this);
+
+        ActivityToolBar.createToolBar(this, navigationView, mDrawerLayout);
 
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
@@ -76,5 +82,15 @@ public class RouteActivity extends FragmentActivity {
             btnShowOnMap.setEnabled(true);
         }
         listfragment.update(list);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

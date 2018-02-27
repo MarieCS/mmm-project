@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.mcs.mmm_project.adapter.SQLDatabaseHelper;
 import com.example.mcs.mmm_project.pojo.Event;
