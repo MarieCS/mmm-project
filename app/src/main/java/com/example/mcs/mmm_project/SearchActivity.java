@@ -2,12 +2,15 @@ package com.example.mcs.mmm_project;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.mcs.mmm_project.fragment.EventListFragment;
 import com.example.mcs.mmm_project.fragment.EventSearch;
@@ -56,6 +59,12 @@ public class SearchActivity extends AppCompatActivity implements OnSearchEnd {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        ActivityToolBar.selectMenuItem(navigationView, 1);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -81,6 +90,13 @@ public class SearchActivity extends AppCompatActivity implements OnSearchEnd {
             getFragmentManager().executePendingTransactions();
 
             fragment.update(events);
+        }
+
+        // Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

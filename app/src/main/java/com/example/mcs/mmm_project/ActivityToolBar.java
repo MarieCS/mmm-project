@@ -40,12 +40,6 @@ public class ActivityToolBar {
 
     private static void createNavigation(Activity activity, NavigationView navigationView, DrawerLayout mDrawerLayout) {
 
-        System.out.println(activity.getClass().getSimpleName());
-        String className = activity.getClass().getSimpleName();
-        if(className.equals("MapsActivity")) navigationView.getMenu().getItem(0).setChecked(true);
-        if(className.equals("SearchActivity")) navigationView.getMenu().getItem(1).setChecked(true);
-        if(className.equals("RouteActivity")) navigationView.getMenu().getItem(2).setChecked(true);
-
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -59,18 +53,21 @@ public class ActivityToolBar {
                         switch (menuItem.getItemId()) {
                             case R.id.menu_map:
                                 Intent intent = new Intent(activity.getApplicationContext(), MapsActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 activity.startActivity(intent);
-                                activity.finish();
                                 return true;
                             case R.id.menu_eventList:
                                 Intent intentSearch = new Intent(activity.getApplicationContext(), SearchActivity.class);
+                                intentSearch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intentSearch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 activity.startActivity(intentSearch);
-                                activity.finish();
                                 return true;
                             case R.id.menu_parcours:
                                 Intent intentParcours = new Intent(activity.getApplicationContext(), RouteActivity.class);
+                                intentParcours.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intentParcours.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 activity.startActivity(intentParcours);
-                                activity.finish();
                                 return true;
                             default:
                                 return true;
@@ -81,4 +78,8 @@ public class ActivityToolBar {
     }
 
     private ActivityToolBar(){}
+
+    public static void selectMenuItem(NavigationView navigationView, int i) {
+       navigationView.getMenu().getItem(i).setChecked(true);
+    }
 }

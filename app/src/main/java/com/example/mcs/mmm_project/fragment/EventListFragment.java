@@ -58,10 +58,19 @@ public class EventListFragment extends Fragment implements View.OnClickListener 
         recyclerView.setLayoutManager(llm);
 
         if (routeActivityObserver != null) {
-            routeActivityObserver.onRecyclerEventListLoaded();
+            routeActivityObserver.onRecyclerEventListLoaded(this);
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (routeActivityObserver != null) {
+            routeActivityObserver.onRecyclerEventListLoaded(this);
+        }
     }
 
     @Override

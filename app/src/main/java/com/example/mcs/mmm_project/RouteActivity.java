@@ -61,6 +61,7 @@ public class RouteActivity extends FragmentActivity {
     @Override
     protected void onResume() { // On recharge les événements du parcours
         super.onResume();
+        ActivityToolBar.selectMenuItem(navigationView, 2);
         listfragment = new EventListFragment();
         listfragment.setArguments(getIntent().getExtras());
         listfragment.setRouteActivityObserver(this);
@@ -71,7 +72,7 @@ public class RouteActivity extends FragmentActivity {
         ft.commit();
     }
 
-    public void onRecyclerEventListLoaded() {
+    public void onRecyclerEventListLoaded(EventListFragment eventListFragment) {
         ArrayList<Event> list = Parcours.getInstance().getParcours();
         if (list.size() == 0) {
             btnShowOnMap.setText("Aucun événement n'a été ajouté au parcours");
@@ -81,7 +82,7 @@ public class RouteActivity extends FragmentActivity {
             btnShowOnMap.setText("Afficher sur la carte");
             btnShowOnMap.setEnabled(true);
         }
-        listfragment.update(list);
+        eventListFragment.update(list);
     }
 
     @Override
