@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.mcs.mmm_project.adapter.SQLDatabaseHelper;
+import com.example.mcs.mmm_project.helper.SQLDatabaseHelper;
 import com.example.mcs.mmm_project.pojo.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

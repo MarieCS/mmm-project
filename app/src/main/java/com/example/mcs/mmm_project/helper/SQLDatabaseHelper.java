@@ -1,4 +1,4 @@
-package com.example.mcs.mmm_project.adapter;
+package com.example.mcs.mmm_project.helper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

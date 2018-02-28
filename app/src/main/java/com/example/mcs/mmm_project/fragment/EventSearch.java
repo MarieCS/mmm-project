@@ -1,6 +1,5 @@
 package com.example.mcs.mmm_project.fragment;
 
-import android.accounts.Account;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,23 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.mcs.mmm_project.R;
-import com.example.mcs.mmm_project.adapter.SQLDatabaseHelper;
+import com.example.mcs.mmm_project.helper.SQLDatabaseHelper;
 import com.example.mcs.mmm_project.pojo.Event;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

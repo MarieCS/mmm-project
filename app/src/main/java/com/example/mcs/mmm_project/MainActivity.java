@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.mcs.mmm_project.adapter.SQLDatabaseHelper;
+import com.example.mcs.mmm_project.helper.SQLDatabaseHelper;
 import com.example.mcs.mmm_project.fragment.EventListFragment;
 import com.example.mcs.mmm_project.pojo.Event;
 
